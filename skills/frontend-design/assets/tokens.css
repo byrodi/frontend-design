@@ -1,0 +1,45 @@
+:root {
+  color-scheme: light;
+  --fd-bg: #fcfafb;
+  --fd-bg-app: #faf8f9;
+  --fd-surface: #ffffff;
+  --fd-text: #29242a;
+  --fd-muted: #74616c;
+  --fd-accent: #e47f93;
+  --fd-accent-hover: #e98c9e;
+  --fd-on-accent: #392029;
+  --fd-rose: #a94460;
+  --fd-rose-strong: #9a3f55;
+  --fd-rose-soft: #fcecf0;
+  --fd-plum: #9272a8;
+  --fd-plum-text: #715385;
+  --fd-plum-soft: #f2edf8;
+  --fd-line: #eee4e9;
+  --fd-line-app: #e9edf2;
+  --fd-control-line: #a88c9a;
+  --fd-success: #267348;
+  --fd-error: #a8324b;
+  --fd-font: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+  --fd-radius-sm: 12px;
+  --fd-radius-md: 17px;
+  --fd-radius-lg: 24px;
+  --fd-shadow: 0 8px 35px rgb(118 52 77 / 4%);
+  --fd-ease: 180ms ease;
+}
+.fd-theme { margin: 0; font-family: var(--fd-font); color: var(--fd-text); background: var(--fd-bg); line-height: 1.55; }
+.fd-theme *, .fd-theme *::before, .fd-theme *::after { box-sizing: border-box; }
+.fd-theme :where(button, input, select, textarea) { font: inherit; }
+.fd-theme :where(button, a, input, select, textarea, summary):focus-visible { outline: 3px solid var(--fd-rose); outline-offset: 4px; }
+.fd-theme ::selection { background: #f5c6d2; color: var(--fd-text); }
+.fd-button { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 12px 22px; border: 1px solid var(--fd-control-line); border-radius: var(--fd-radius-md); background: var(--fd-surface); color: var(--fd-text); text-decoration: none; font-weight: 600; cursor: pointer; transition: background var(--fd-ease), transform var(--fd-ease); }
+.fd-button--primary { background: var(--fd-accent); border-color: var(--fd-accent); color: var(--fd-on-accent); }
+@media (hover: hover) {
+  .fd-button:hover { background: var(--fd-rose-soft); transform: translateY(-2px); }
+  .fd-button--primary:hover { background: var(--fd-accent-hover); }
+}
+.fd-button:disabled { opacity: .65; cursor: default; transform: none; }
+.fd-panel { border: 1px solid var(--fd-line); border-radius: var(--fd-radius-lg); background: var(--fd-surface); box-shadow: var(--fd-shadow); }
+.fd-muted { color: var(--fd-muted); }
+@media (prefers-reduced-motion: reduce) {
+  .fd-theme *, .fd-theme *::before, .fd-theme *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}

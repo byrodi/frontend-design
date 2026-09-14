@@ -1,0 +1,10 @@
+{
+  "name": "frontend-design",
+  "description": "Light pink-plum design system for sites, web apps and desktop UI, with CSS tokens and an interactive HTML starter.",
+  "author": {
+    "name": "rodionmasalov",
+    "url": "https://github.com/byrodi"
+  },
+  "repository": "https://github.com/byrodi/frontend-design",
+  "license": "MIT"
+}
