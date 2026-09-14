@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#fcfafb">
-  <title>Тише — пример визуального выбора</title>
+  <title>Hush, a visual choice example</title>
   <link rel="stylesheet" href="tokens.css">
   <style>
     .wrap { width: min(1160px, 100%); margin-inline: auto; padding-inline: 24px; }
@@ -48,19 +48,19 @@
   </style>
 </head>
 <body class="fd-theme">
-  <header class="wrap"><div class="brand">тише<span>.</span></div><a href="#choose">Выбрать ритм</a></header>
+  <header class="wrap"><div class="brand">hush<span>.</span></div><a href="#choose">Choose a rhythm</a></header>
   <main class="wrap">
     <section class="hero" aria-labelledby="title">
       <div>
-        <h1 id="title">День, в котором<br>есть место себе.</h1>
-        <p class="intro">Выберите удобный ритм. Посмотрите, как работа и паузы складываются в ваш день.</p>
-        <a class="fd-button fd-button--primary" href="#choose">Попробовать</a>
+        <h1 id="title">A day that leaves<br>room for you.</h1>
+        <p class="intro">Pick a rhythm that suits you. See how work and breaks fit into your day.</p>
+        <a class="fd-button fd-button--primary" href="#choose">Try it</a>
       </div>
-      <div class="preview fd-panel" aria-label="Предпросмотр ритма дня">
-        <div class="preview-top"><strong>Ваш день</strong><span class="badge">Пример</span></div>
+      <div class="preview fd-panel" aria-label="Day rhythm preview">
+        <div class="preview-top"><strong>Your day</strong><span class="badge">Sample</span></div>
         <svg class="day-art" viewBox="0 0 420 250" role="img" aria-labelledby="art-title art-desc">
-          <title id="art-title">Ритм дня: Баланс</title>
-          <desc id="art-desc">Три рабочих блока, разделённые короткими паузами.</desc>
+          <title id="art-title">Day rhythm: Balance</title>
+          <desc id="art-desc">Three work blocks separated by short breaks.</desc>
           <circle cx="332" cy="55" r="34" fill="#fcecf0"/>
           <circle cx="332" cy="55" r="19" fill="#e47f93"/>
           <path d="M25 192 C110 192 96 84 188 84 S285 192 395 155" fill="none" stroke="#eee4e9" stroke-width="3"/>
@@ -68,29 +68,29 @@
           <g stroke="#a94460" stroke-width="2" fill="none" stroke-linecap="round"><path d="M36 168h32m-32 12h49"/><path d="M171 80h32m-32 12h49"/><path d="M312 148h32m-32 12h49"/></g>
           <g id="rhythm-bars" fill="#e47f93"><rect x="28" y="229" width="96" height="12" rx="6"/><rect x="158" y="229" width="96" height="12" rx="6"/><rect x="288" y="229" width="96" height="12" rx="6"/></g>
         </svg>
-        <h2 id="preview-title">Баланс</h2>
-        <p id="preview-copy">Три рабочих блока, разделённые короткими паузами.</p>
+        <h2 id="preview-title">Balance</h2>
+        <p id="preview-copy">Three work blocks separated by short breaks.</p>
       </div>
     </section>
     <form id="choose">
       <fieldset>
-        <legend>Как вам удобнее?</legend>
+        <legend>What works for you?</legend>
         <div class="choices">
-          <label class="choice"><input type="radio" name="rhythm" value="gentle"><span><strong>Без спешки</strong><small>Больше пространства между делами</small><span class="mini" aria-hidden="true"><i></i><i class="pause"></i><i></i></span></span></label>
-          <label class="choice"><input type="radio" name="rhythm" value="balance" checked><span><strong>Баланс</strong><small>Работа чередуется с паузами</small><span class="mini" aria-hidden="true"><i></i><i class="pause"></i><i></i><i class="pause"></i><i></i></span></span></label>
-          <label class="choice"><input type="radio" name="rhythm" value="focus"><span><strong>Погружение</strong><small>Один длинный блок для главного</small><span class="mini" aria-hidden="true"><i></i></span></span></label>
+          <label class="choice"><input type="radio" name="rhythm" value="gentle"><span><strong>Unhurried</strong><small>More space between tasks</small><span class="mini" aria-hidden="true"><i></i><i class="pause"></i><i></i></span></span></label>
+          <label class="choice"><input type="radio" name="rhythm" value="balance" checked><span><strong>Balance</strong><small>Work alternates with breaks</small><span class="mini" aria-hidden="true"><i></i><i class="pause"></i><i></i><i class="pause"></i><i></i></span></span></label>
+          <label class="choice"><input type="radio" name="rhythm" value="focus"><span><strong>Deep focus</strong><small>One long block for what matters</small><span class="mini" aria-hidden="true"><i></i></span></span></label>
         </div>
       </fieldset>
-      <div class="form-bottom"><button class="fd-button fd-button--primary" type="submit">Применить к примеру</button><p id="status" role="status" aria-live="polite"></p></div>
-      <noscript><p>Чтобы переключать превью, включите JavaScript. Сейчас показан вариант «Баланс».</p></noscript>
+      <div class="form-bottom"><button class="fd-button fd-button--primary" type="submit">Apply to sample</button><p id="status" role="status" aria-live="polite"></p></div>
+      <noscript><p>Turn on JavaScript to switch the preview. The Balance option is shown now.</p></noscript>
     </form>
   </main>
-  <footer class="wrap">Демонстрация интерфейса. Выбор действует только на этой странице.</footer>
+  <footer class="wrap">Interface demo. Your choice applies to this page only.</footer>
   <script>
     const rhythms = {
-      gentle: { title: 'Без спешки', copy: 'Два небольших дела и длинная пауза между ними.', bars: [[28, 85], [300, 85]] },
-      balance: { title: 'Баланс', copy: 'Три рабочих блока, разделённые короткими паузами.', bars: [[28, 96], [158, 96], [288, 96]] },
-      focus: { title: 'Погружение', copy: 'Один длинный блок без переключений. Затем время отдохнуть.', bars: [[28, 356]] }
+      gentle: { title: 'Unhurried', copy: 'Two small tasks with a long break between them.', bars: [[28, 85], [300, 85]] },
+      balance: { title: 'Balance', copy: 'Three work blocks separated by short breaks.', bars: [[28, 96], [158, 96], [288, 96]] },
+      focus: { title: 'Deep focus', copy: 'One long block without switching. Then time to rest.', bars: [[28, 356]] }
     };
     const form = document.querySelector('#choose');
     const status = document.querySelector('#status');
@@ -99,7 +99,7 @@
       const rhythm = current();
       document.querySelector('#preview-title').textContent = rhythm.title;
       document.querySelector('#preview-copy').textContent = rhythm.copy;
-      document.querySelector('#art-title').textContent = 'Ритм дня: ' + rhythm.title;
+      document.querySelector('#art-title').textContent = 'Day rhythm: ' + rhythm.title;
       document.querySelector('#art-desc').textContent = rhythm.copy;
       const bars = rhythm.bars.map(([x, width]) => {
         const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
@@ -107,14 +107,14 @@
         return rect;
       });
       document.querySelector('#rhythm-bars').replaceChildren(...bars);
-      status.textContent = 'Предпросмотр: ' + rhythm.title + '. ' + rhythm.copy;
+      status.textContent = 'Preview: ' + rhythm.title + '. ' + rhythm.copy;
     });
     form.addEventListener('submit', (event) => {
       event.preventDefault();
-      document.querySelector('.badge').textContent = 'Применено';
-      status.textContent = 'К примеру применён ритм «' + current().title + '».';
+      document.querySelector('.badge').textContent = 'Applied';
+      status.textContent = 'Applied the ' + current().title + ' rhythm to the sample.';
     });
-    form.addEventListener('change', () => { document.querySelector('.badge').textContent = 'Пример'; });
+    form.addEventListener('change', () => { document.querySelector('.badge').textContent = 'Sample'; });
   </script>
 </body>
 </html>

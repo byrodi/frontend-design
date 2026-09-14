@@ -2,7 +2,7 @@
 
 Light pink-plum design system for sites, web apps and desktop UI, with CSS tokens and an interactive HTML starter.
 
-A skill for Claude Code and Codex. The agent applies the style when you ask for a site, landing page, web app or component in it. Instructions are written in Russian.
+A skill for Claude Code and Codex. The agent applies the style when you ask for a site, landing page, web app or component in it.
 
 ![Interactive starter with a day planning demo, rendered in Chrome](docs/preview.png)
 
@@ -30,7 +30,7 @@ A project with its own design system keeps it, and the skill stays out of backen
 The skill loads on requests like these. To call it explicitly in Claude Code, run `/frontend-design:frontend-design`.
 
 ```text
-сверстай лендинг в этом стиле
+lay out a landing page in this style
 build a settings screen for the web app in this style
 ```
 

@@ -1,62 +1,62 @@
-# Визуальная система
+# Visual system
 
-## Палитра и роли
+## Palette and roles
 
-Muted и семантические цвета подобраны для читаемости.
+Muted and semantic colors are tuned for readability.
 
-| Роль | Значение | Применение |
+| Role | Value | Use |
 | --- | --- | --- |
-| Фон сайта | `#fcfafb` | Большие свободные области |
-| Фон приложения | `#faf8f9` | Рабочее пространство |
-| Поверхность | `#ffffff` | Панели, списки, диалоги |
-| Основной текст | `#29242a` | Заголовки и контент |
-| Вторичный текст | `#74616c` | Подписи, пояснения |
-| Главный акцент | `#e47f93` | Основная кнопка, отдельный визуальный акцент |
-| Текст на акценте | `#392029` | Подпись розовой кнопки |
-| Глубокая роза | `#a94460` | Ссылки, focus, активный текст |
-| Тёмная роза | `#9a3f55` | Выбранная навигация, outlined-кнопки |
-| Мягкая роза | `#fcecf0` | Подложка выбора или иконки |
-| Сливовый | `#9272a8` | Вторичная ветка схемы, иллюстрация |
-| Мягкий сливовый | `#f2edf8` | Дополнительная поверхность |
-| Граница сайта | `#eee4e9` | Декоративное разделение поверхностей |
-| Граница строк | `#e9edf2` | Разделители строк |
+| Site background | `#fcfafb` | Large open areas |
+| App background | `#faf8f9` | Workspace |
+| Surface | `#ffffff` | Panels, lists, dialogs |
+| Main text | `#29242a` | Headings and content |
+| Secondary text | `#74616c` | Captions, hints |
+| Main accent | `#e47f93` | Primary button, a single visual accent |
+| Text on accent | `#392029` | Label of the pink button |
+| Deep rose | `#a94460` | Links, focus, active text |
+| Dark rose | `#9a3f55` | Selected navigation, outlined buttons |
+| Soft rose | `#fcecf0` | Background of a selection or an icon |
+| Plum | `#9272a8` | Secondary branch of a diagram, illustration |
+| Soft plum | `#f2edf8` | Additional surface |
+| Site border | `#eee4e9` | Decorative separation of surfaces |
+| Row border | `#e9edf2` | Row dividers |
 
-Светлая граница отделяет области, но сама по себе не делает элемент управления узнаваемым. Для контролов используй форму, подпись, видимый маркер и более тёмную границу. Сливовый и розовый акценты не предназначены для мелкого текста на белом фоне. В CSS предусмотрены отдельные тёмные токены.
+A light border separates areas, but on its own it does not make a control recognizable. Give controls a shape, a label, a visible marker and a darker border. The plum and pink accents are not meant for small text on white; the CSS has separate dark tokens for that.
 
-## Масштаб
+## Scale
 
-- Базовая сетка отступов: 4, 8, 12, 16, 24, 32, 48, 64, 96 px.
-- Контент лендинга до 1200-1280 px, поля 24-48 px; мобильные поля 16-24 px.
-- Лендинг: заголовок `clamp(2.75rem, 7vw, 7rem)`, line-height 1.04-1.1, tracking около `-.045em`.
-- Приложение: заголовок 28-32 px, контент 14-16 px, подписи 12-14 px, line-height 1.45-1.65.
-- Шрифт: system UI, Segoe UI, Arial; Inter при наличии в проекте. Проверь кириллицу. Для этой эстетики обычный качественно настроенный sans-serif уместен; необычный шрифт не обязателен.
-- Радиусы: 10-12 px у пиктограмм и небольших полей, 14-18 у кнопок и списков, 20-24 у больших панелей. Pill оставь для коротких сегментов и статусов.
-- Иконки: 20-24 px, stroke 1.6-1.8, rounded caps, currentColor. Используй существующую библиотеку проекта; не смешивай emoji и несколько несовместимых наборов.
-- Движение: 140-220 ms в ответ на действие. Маленький сдвиг допустим у кнопки; не заставляй каждый блок подпрыгивать. Слабое локальное свечение вокруг демонстрации допустимо, градиент на весь сайт не нужен.
+- Spacing grid: 4, 8, 12, 16, 24, 32, 48, 64, 96 px.
+- Landing content up to 1200-1280 px, side margins 24-48 px; mobile margins 16-24 px.
+- Landing page: heading `clamp(2.75rem, 7vw, 7rem)`, line-height 1.04-1.1, tracking about `-.045em`.
+- App: heading 28-32 px, content 14-16 px, captions 12-14 px, line-height 1.45-1.65.
+- Font: system UI, Segoe UI, Arial; Inter when the project already has it. Check that the font covers the interface language. A well-tuned ordinary sans-serif fits this look, an unusual font is not required.
+- Radii: 10-12 px for icon tiles and small fields, 14-18 for buttons and lists, 20-24 for large panels. Keep pills for short segments and statuses.
+- Icons: 20-24 px, stroke 1.6-1.8, rounded caps, currentColor. Use the project's existing icon library; do not mix emoji with several incompatible sets.
+- Motion: 140-220 ms in response to an action. A small shift is fine on a button, but not every block should bounce. A faint local glow around a demo is fine, a site-wide gradient is not needed.
 
-## Две композиции одной семьи
+## Two layouts from one family
 
-### Лендинг
+### Landing page
 
-Короткая навигация, ёмкий заголовок с главным действием, визуальное доказательство или интерактивный пример, только необходимые пояснения, простой footer. Это роли, делать под каждую отдельную секцию не обязательно. Можно поставить демонстрацию справа от текста или сделать изображение главным.
+Short navigation, a concise heading with the main action, visual proof or an interactive example, only the necessary explanations, a simple footer. These are roles, not one required section each. The demo can sit to the right of the text, or the image can lead.
 
-В шаблоне `${CLAUDE_SKILL_DIR}/assets/interactive-starter.html` показано планирование дня, где выбор визуального ритма меняет превью. На нём видно, как стиль ложится на конкретную предметную область. Шаблон открывается прямо в браузере рядом с `tokens.css`; внешние библиотеки, шрифты и сеть не нужны.
+The starter `${CLAUDE_SKILL_DIR}/assets/interactive-starter.html` shows day planning, where choosing a rhythm changes the preview. It shows how the style fits a specific subject area. The starter opens directly in a browser next to `tokens.css` and needs no external libraries, fonts or network.
 
-### Рабочий интерфейс
+### Working interface
 
-Умеренно узкая белая навигация, светлый холст, заголовок и одно основное действие, затем полезный контент. Списки могут быть одной панелью с разделителями. Активный раздел получает розовую подложку и тёмно-розовую подпись. На мобильном навигация перестраивается в короткую строку или раскрываемое меню по сложности продукта.
+A moderately narrow white navigation, a light canvas, a heading and one main action, then useful content. A list can be one panel with dividers. The active section gets a soft rose background and a dark rose label. On mobile the navigation becomes a short row or a collapsible menu, depending on how complex the product is.
 
-Пример каркаса (подставь реальные адреса и содержимое):
+Layout example (fill in real URLs and content):
 
 ```html
 <div class="fd-app">
-  <nav class="fd-nav" aria-label="Разделы">
-    <a href="/today" aria-current="page">Сегодня</a>
-    <a href="/library">Библиотека</a>
+  <nav class="fd-nav" aria-label="Sections">
+    <a href="/today" aria-current="page">Today</a>
+    <a href="/library">Library</a>
   </nav>
   <main class="fd-main">
-    <h1>Сегодня</h1>
-    <!-- Здесь основной сценарий продукта и действие с реальным обработчиком. -->
+    <h1>Today</h1>
+    <!-- The product's main scenario and an action with a real handler go here. -->
   </main>
 </div>
 ```
@@ -73,16 +73,16 @@ Muted и семантические цвета подобраны для чит�
 }
 ```
 
-## Выбор управления
+## Choosing controls
 
-| Задача | Предпочтительный подход |
+| Task | Preferred approach |
 | --- | --- |
-| Выбрать один из нескольких вариантов | Radio-карточки с превью и короткими названиями |
-| Настроить приблизительную величину | Ползунок с результатом; точное поле, если важна точность |
-| Показать связь объектов | Схема с прямым управлением и эквивалентом через выбор или кнопки |
-| Загрузить изображение | Зона drop, доступная кнопка выбора файла и превью |
-| Понять эффект настройки | До/после или живое превью |
-| Ввести имя, адрес, поиск | Обычное подписанное поле, интерактивная надстройка здесь не помогает |
-| Открыть редкую опцию | Details или другой простой disclosure вместо постоянной панели |
+| Pick one of several options | Radio cards with previews and short names |
+| Set an approximate amount | Slider with the result; an exact field when precision matters |
+| Show relations between objects | Diagram with direct manipulation and an equivalent through selection or buttons |
+| Upload an image | Drop zone, an accessible file picker button and a preview |
+| Understand the effect of a setting | Before and after, or a live preview |
+| Enter a name, address or search | A plain labeled field, an interactive layer does not help here |
+| Open a rare option | Details or another simple disclosure instead of a permanent panel |
 
-Сначала убери лишние решения, затем улучшай управление оставшимися. Не добавляй сложную схему ради украшения.
+First remove unnecessary decisions, then improve the controls for the ones left. Do not add a complex diagram for decoration.

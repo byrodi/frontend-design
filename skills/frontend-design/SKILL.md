@@ -1,47 +1,53 @@
 ---
 name: frontend-design
-description: "Светлая розово-сливовая дизайн-система с CSS-токенами, справочником и интерактивным HTML-шаблоном. Используй, когда просят сделать, сверстать или переоформить сайт, лендинг, веб-приложение, desktop UI или компонент в этом стиле. Не нужен для backend и инфраструктуры. Если у проекта уже есть своя дизайн-система, не применяй скилл и следуй ей."
+description: >
+  Light pink-plum design system with CSS tokens, a design reference and an
+  interactive HTML starter. Use when asked to build, lay out or restyle a
+  site, landing page, web app, desktop UI or component in this style, or on
+  "сверстай в этом стиле", "розовый стиль". Not for backend or
+  infrastructure. When the project already has its own design system, do not
+  apply this skill and follow that system.
 ---
 
 # Frontend design
 
-Создавай спокойные, светлые, понятные интерфейсы в одной визуальной семье. Сохраняй узнаваемые тона и характер, но выбирай композицию, образы и сценарии под конкретный продукт. Явное новое пожелание пользователя имеет приоритет.
+Build calm, light and clear interfaces from one visual family. Keep the recognizable tones and character, but choose the composition, imagery and scenarios for the specific product. A new explicit request from the user takes priority.
 
-Все файлы скилла лежат в `${CLAUDE_SKILL_DIR}`, это папка с данным SKILL.md. Claude Code подставляет путь сам. Если в тексте (в том числе в references) переменная осталась как есть, считай её папкой, где лежит SKILL.md.
+All skill files live in `${CLAUDE_SKILL_DIR}`, the folder that contains this SKILL.md. Claude Code substitutes the path. If the variable is left as is anywhere in the text, references included, read it as the folder that contains SKILL.md.
 
-## Основа стиля
+## Style basics
 
-- Почти белый фон с розовым подтоном, белые поверхности, пыльно-розовый акцент, глубокая роза для ссылок и активных подписей. Приглушённый сливовый служит вторичным акцентом.
-- Много воздуха, тонкие границы, мягкие скругления разных размеров. Тени едва заметны и объясняют слой или движение.
-- Спокойный sans-serif с поддержкой языка интерфейса, ясная иерархия. Крупный лаконичный заголовок подходит лендингу; в рабочем приложении важнее компактность и обзор.
-- Розовый обозначает главное действие или выбор. Не окрашивай в него весь экран; ошибки и успех имеют собственную семантику.
-- Простые контурные иконки, реальные превью, понятные схемы. Один выразительный визуальный центр лучше россыпи украшений.
-- Не превращай каждую строку в отдельную карточку. Связанные объекты удобно группировать в одну поверхность с разделителями.
+- An almost white background with a pink tint, white surfaces, a dusty pink accent, and a deep rose for links and active labels. A muted plum is the secondary accent.
+- Plenty of air, thin borders, soft radii in several sizes. Shadows are barely visible and explain a layer or a movement.
+- A calm sans-serif that covers the interface language, with a clear hierarchy. A large concise heading suits a landing page; in a working app, density and overview matter more.
+- Pink marks the main action or a choice. Do not paint the whole screen with it; errors and success have their own semantic colors.
+- Simple outline icons, real previews, clear diagrams. One expressive visual center beats a scatter of decorations.
+- Do not turn every row into a separate card. Related objects group well into one surface with dividers.
 
-## Приоритеты взаимодействия
+## Interaction priorities
 
-**Интерактивное взаимодействие лучше обычного ввода.** Сначала ищи способ выбрать, переключить, передвинуть, сравнить или попробовать с немедленной обратной связью. Для конечного набора вариантов используй визуальные карточки или сегменты, для диапазона подойдёт ползунок с видимым значением и точным вводом, когда он нужен, для связей управляемая схема. Оставляй текстовые поля для текста, поиска и произвольных точных данных. Интерактивность уместна там, где сокращает усилия; игра поверх простой задачи лишняя.
+**Interaction beats plain input.** First look for a way to choose, toggle, drag, compare or try something with immediate feedback. For a finite set of options use visual cards or segments, for a range a slider with a visible value and exact input when it is needed, for relations a controllable diagram. Keep text fields for text, search and arbitrary exact data. Interactivity belongs where it cuts effort; a game on top of a simple task is too much.
 
-**Картинки лучше длинного текста.** Покажи результат настоящим скриншотом, предметной иллюстрацией, превью или схемой и добавь короткую подпись. Живой пример предпочтительнее описания его возможностей. Иконка не заменяет смысловую картинку. Названия действий, ошибки, значения и доступные подписи сохраняй; не прячь важный текст внутри изображения. Используй имеющиеся ассеты или доступный инструмент генерации, когда это полезно; для схем подходят SVG/CSS. Не требуй конкретного MCP или генератора.
+**Pictures beat long text.** Show the result with a real screenshot, a subject illustration, a preview or a diagram, and add a short caption. A live example is better than a description of its features. An icon does not replace a meaningful picture. Keep action names, errors, values and accessible labels as text, never hidden inside an image. Use existing assets or an available generation tool when it helps; SVG and CSS suit diagrams. Do not require a specific MCP server or generator.
 
-**Простота лучше многофункциональности.** Выделяй одну главную задачу экрана и основной следующий шаг. Предлагай разумные значения по умолчанию, раскрывай редкие настройки по запросу. Не добавляй тарифы, аналитику, фильтры, дополнительные страницы и настройки без потребности. Явно запрошенные функции сохраняй и упрощай путь к ним.
+**Simplicity beats feature count.** Pick one main task per screen and one main next step. Offer sensible defaults and reveal rare settings on demand. Do not add pricing, analytics, filters, extra pages or settings without a need. Keep explicitly requested features and shorten the path to them.
 
-## Как работать
+## Workflow
 
-1. Посмотри существующий стек, компоненты, контент и ассеты. Определи главную задачу человека. Обычно контекста достаточно: принимай обратимые решения самостоятельно.
-2. Прочитай `${CLAUDE_SKILL_DIR}/references/design-system.md` для палитры, размеров и композиций. Выбери масштаб под задачу (лендинг или рабочий интерфейс). При точечной правке сохраняй соседние паттерны, не запускай незапрошенный полный редизайн.
-3. Используй `${CLAUDE_SKILL_DIR}/assets/tokens.css` как исходную тему. Переноси токены в CSS variables, Tailwind, MUI или существующую систему проекта без замены его стека. Для нового интерфейса или визуального выбора открой `${CLAUDE_SKILL_DIR}/assets/interactive-starter.html`, автономный рабочий пример с SVG-превью, карточками выбора и обратной связью. Копируй нужные части вместе с CSS и адаптируй данные и композицию.
-4. Реализуй настоящий основной сценарий. В демонстрации явно обозначай её границы. В продукте связывай действия с состоянием и существующим API; сообщение об успехе должно означать реальный успех.
-5. Проверь узкий и широкий экран, клавиатуру, длинные подписи, состояния выбора и ошибки. При доступном браузере посмотри скриншоты и пройди главный сценарий. Если браузер недоступен, сообщи ограничение проверки, не заявляй о визуальном тестировании.
+1. Look at the existing stack, components, content and assets. Identify the person's main task. The context is usually enough, so make reversible decisions on your own.
+2. Read `${CLAUDE_SKILL_DIR}/references/design-system.md` for the palette, sizes and layouts. Pick the scale for the task, a landing page or a working interface. For a targeted edit, keep the neighbouring patterns and do not start an unrequested full redesign.
+3. Use `${CLAUDE_SKILL_DIR}/assets/tokens.css` as the base theme. Carry the tokens into CSS variables, Tailwind, MUI or the project's existing system without replacing its stack. For a new interface or a visual choice, open `${CLAUDE_SKILL_DIR}/assets/interactive-starter.html`, a self-contained working example with an SVG preview, choice cards and feedback. Copy the parts you need together with their CSS and adapt the data and composition.
+4. Implement the real main scenario. In a demo, state its limits clearly. In a product, wire actions to state and the existing API; a success message must mean real success.
+5. Check narrow and wide screens, the keyboard, long labels, selection states and errors. With a browser available, look at screenshots and walk through the main scenario. Without one, report that limit and do not claim visual testing.
 
-## Критерии готовности
+## Definition of done
 
-- Понятно, что здесь можно сделать, без чтения длинной инструкции.
-- Есть содержательный визуальный пример там, где он объясняет лучше абзаца; управление сразу показывает результат.
-- Палитра остаётся мягкой, текст читается: не ставь белые мелкие буквы на светло-розовый. Проверяй контраст итоговых сочетаний, включая выбранные и отключённые состояния.
-- Управление доступно с клавиатуры, фокус видим, размер цели комфортен для касания. Drag-and-drop имеет путь через кнопки или выбор; hover не единственный способ узнать или сделать что-то.
-- У изображений есть осмысленный alt, декоративным ставь пустой alt или aria-hidden. Статус понятен и без цвета, через текст или значок. Анимация учитывает prefers-reduced-motion.
-- На мобильном нет горизонтального переполнения и спрятанных главных действий. Длинные имена и переводы не ломают сетку.
-- Нет мёртвых кнопок, декоративных графиков с выдуманными показателями, бесконечной анимации и незапрошенных возможностей.
+- It is clear what can be done here without reading long instructions.
+- A meaningful visual example stands where it explains better than a paragraph, and controls show the result right away.
+- The palette stays soft and text stays readable, so no small white letters on light pink. Check the contrast of the final combinations, selected and disabled states included.
+- Controls work from the keyboard, focus is visible, targets are comfortable to tap. Drag and drop has a path through buttons or selection, and hover is never the only way to learn or do something.
+- Images have meaningful alt text, decorative ones get an empty alt or aria-hidden. Status is clear without color, through text or an icon. Animation respects prefers-reduced-motion.
+- On mobile there is no horizontal overflow and no hidden main action. Long names and translations do not break the grid.
+- No dead buttons, no decorative charts with made-up numbers, no endless animation and no unrequested features.
 
-Для применения этого скилла сеть не нужна: палитра, примеры и шаблон находятся здесь.
+The skill needs no network. The palette, examples and starter are all in this folder.
