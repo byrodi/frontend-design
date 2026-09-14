@@ -3,10 +3,9 @@ name: frontend-design
 description: >
   Light pink-plum design system with CSS tokens, a design reference and an
   interactive HTML starter. Use when asked to build, lay out or restyle a
-  site, landing page, web app, desktop UI or component in this style, or on
-  "сверстай в этом стиле", "розовый стиль". Not for backend or
-  infrastructure. When the project already has its own design system, do not
-  apply this skill and follow that system.
+  site, landing page, web app, desktop UI or component in this style. Not for
+  backend or infrastructure. When the project already has its own design
+  system, do not apply this skill and follow that system.
 ---
 
 # Frontend design
