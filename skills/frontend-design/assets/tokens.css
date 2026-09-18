@@ -19,6 +19,10 @@
   --fd-control-line: #a88c9a;
   --fd-success: #267348;
   --fd-error: #a8324b;
+  --fd-brand: #d78494;
+  --fd-brand-blush: #efccd4;
+  --fd-brand-cream: #fdeff2;
+  --fd-brand-ink: #8e3a50;
   --fd-font: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
   --fd-radius-sm: 12px;
   --fd-radius-md: 17px;

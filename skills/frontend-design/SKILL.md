@@ -1,9 +1,11 @@
 ---
 name: frontend-design
 description: >
-  Light pink-plum design system with CSS tokens, a design reference and an
-  interactive HTML starter. Use when asked to build, lay out or restyle a
-  site, landing page, web app, desktop UI or component in this style. Not for
+  Light pink-plum design system with CSS tokens, a design reference, an
+  interactive HTML starter and the author's "rodi." brand kit (logo, avatar,
+  animated banner). Use when asked to build, lay out or restyle a site,
+  landing page, web app, desktop UI or component in this style, or to make a
+  logo, avatar, banner or cover in the rodi. brand. Not for
   backend or infrastructure. When the project already has its own design
   system, do not apply this skill and follow that system.
 ---
@@ -30,6 +32,10 @@ All skill files live in `${CLAUDE_SKILL_DIR}`, the folder that contains this SKI
 **Pictures beat long text.** Show the result with a real screenshot, a subject illustration, a preview or a diagram, and add a short caption. A live example is better than a description of its features. An icon does not replace a meaningful picture. Keep action names, errors, values and accessible labels as text, never hidden inside an image. Use existing assets or an available generation tool when it helps; SVG and CSS suit diagrams. Do not require a specific MCP server or generator.
 
 **Simplicity beats feature count.** Pick one main task per screen and one main next step. Offer sensible defaults and reveal rare settings on demand. Do not add pricing, analytics, filters, extra pages or settings without a need. Keep explicitly requested features and shorten the path to them.
+
+## Brand
+
+The author's own sites, projects, profiles and covers carry the "rodi." brand: a monoline wordmark with a signature period, the short mark "r." and brand pink `#d78494`. Read `${CLAUDE_SKILL_DIR}/references/brand.md` and use the ready files in `${CLAUDE_SKILL_DIR}/assets/brand/`. For a new size or variant, change and rerun `generate.py` there instead of redrawing the logo. A product with its own name keeps its own logo and gets at most a small "by rodi." credit.
 
 ## Workflow
 

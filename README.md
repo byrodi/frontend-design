@@ -15,6 +15,7 @@ A skill for Claude Code and Codex. The agent applies the style when you ask for 
 - Two layouts from one family, a landing page and an app shell
 - A self-contained HTML starter with choice cards and a live preview
 - A definition of done for contrast, keyboard, mobile and reduced motion
+- The rodi. brand kit: wordmark, avatar, animated Discord banner and a header, with the script that generates them
 
 ## How it works
 
