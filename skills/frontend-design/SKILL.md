@@ -22,6 +22,8 @@ All skill files live in `${CLAUDE_SKILL_DIR}`, the folder that contains this SKI
 - Plenty of air, thin borders, soft radii in several sizes. Shadows are barely visible and explain a layer or a movement.
 - A calm sans-serif that covers the interface language, with a clear hierarchy. A large concise heading suits a landing page; in a working app, density and overview matter more.
 - Pink marks the main action or a choice. Do not paint the whole screen with it; errors and success have their own semantic colors.
+- Pink and plum are two branches of state on one screen: pink for what is live and ahead, plum for what is finished or made by the system. Amber says attention, red says danger, both on the edge of an element and never as a large fill.
+- State is drawn with three devices, each with one meaning: a colored bar on the left edge for a notice, a thin diagonal hatch for space that exists but is not available, a dashed frame for what is not final or deserves care. The words still say the state; the drawing only makes it visible.
 - Simple outline icons, real previews, clear diagrams. One expressive visual center beats a scatter of decorations.
 - Do not turn every row into a separate card. Related objects group well into one surface with dividers.
 
@@ -40,7 +42,7 @@ The author's own sites, projects, profiles and covers carry the "rodi." brand: a
 ## Workflow
 
 1. Look at the existing stack, components, content and assets. Identify the person's main task. The context is usually enough, so make reversible decisions on your own.
-2. Read `${CLAUDE_SKILL_DIR}/references/design-system.md` for the palette, sizes and layouts. Pick the scale for the task, a landing page or a working interface. For a targeted edit, keep the neighbouring patterns and do not start an unrequested full redesign.
+2. Read `${CLAUDE_SKILL_DIR}/references/design-system.md` for the palette, sizes, layouts and the marks of state (notice bar, hatch, dashed frames). Pick the scale for the task, a landing page or a working interface. For a targeted edit, keep the neighbouring patterns and do not start an unrequested full redesign.
 3. Use `${CLAUDE_SKILL_DIR}/assets/tokens.css` as the base theme. Carry the tokens into CSS variables, Tailwind, MUI or the project's existing system without replacing its stack. For a new interface or a visual choice, open `${CLAUDE_SKILL_DIR}/assets/interactive-starter.html`, a self-contained working example with an SVG preview, choice cards and feedback. Copy the parts you need together with their CSS and adapt the data and composition.
 4. Implement the real main scenario. In a demo, state its limits clearly. In a product, wire actions to state and the existing API; a success message must mean real success.
 5. Check narrow and wide screens, the keyboard, long labels, selection states and errors. With a browser available, look at screenshots and walk through the main scenario. Without one, report that limit and do not claim visual testing.
@@ -49,6 +51,7 @@ The author's own sites, projects, profiles and covers carry the "rodi." brand: a
 
 - It is clear what can be done here without reading long instructions.
 - A meaningful visual example stands where it explains better than a paragraph, and controls show the result right away.
+- Every state is readable without its color: a struck-through title, a label, an icon or a sentence stands next to the bar, hatch or dashed frame.
 - The palette stays soft and text stays readable, so no small white letters on light pink. Check the contrast of the final combinations, selected and disabled states included.
 - Controls work from the keyboard, focus is visible, targets are comfortable to tap. Drag and drop has a path through buttons or selection, and hover is never the only way to learn or do something.
 - Images have meaningful alt text, decorative ones get an empty alt or aria-hidden. Status is clear without color, through text or an icon. Animation respects prefers-reduced-motion.
