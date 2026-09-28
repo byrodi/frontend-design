@@ -65,16 +65,45 @@ Layout example (fill in real URLs and content):
 ```
 
 ```css
+html { scrollbar-gutter: stable; }
 .fd-app { min-height: 100svh; display: grid; grid-template-columns: 226px minmax(0, 1fr); background: var(--fd-bg-app); }
 .fd-nav { padding: 32px 16px; background: var(--fd-surface); border-right: 1px solid var(--fd-line-app); }
-.fd-nav a { display: block; padding: 14px 16px; border-radius: var(--fd-radius-sm); color: var(--fd-muted); text-decoration: none; }
-.fd-nav a[aria-current="page"] { color: var(--fd-rose-strong); background: var(--fd-rose-soft); font-weight: 600; }
+.fd-nav a { display: block; padding: 14px 16px; border: 1px solid transparent; border-radius: var(--fd-radius-sm); color: var(--fd-muted); font-weight: 600; text-decoration: none; }
+.fd-nav a[aria-current="page"] { color: var(--fd-rose-strong); background: var(--fd-rose-soft); }
 .fd-main { min-width: 0; padding: clamp(20px, 4vw, 40px); }
 @media (max-width: 700px) {
   .fd-app { grid-template-columns: minmax(0, 1fr); }
   .fd-nav { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 16px; border-right: 0; border-bottom: 1px solid var(--fd-line-app); }
 }
 ```
+
+### Layout stability
+
+Responsive scaling between screen sizes is expected. Within one screen size, nothing already on screen moves because something changed state: a tab switched, a cabinet or account switched, a panel or dialog opened, data loaded, a notice or a validation error appeared. The navigation, the header, the tab bar and the page title stay pixel-identical across the sections that share them.
+
+The usual causes and their fixes:
+
+- The scrollbar appears when a section grows taller than the window and the whole page jumps sideways. Put `scrollbar-gutter: stable` on the root and on every scrolling panel.
+- A control that appears only for some accounts or states (an organization switcher, a banner, a counter) pushes the content below it. Give it a slot that exists in every state, or place it where its presence moves nothing, such as inside the menu block it belongs to or in a layer.
+- A width that follows content: a sidebar or a toolbar grows with a long name. Chrome gets fixed widths; long names truncate with an ellipsis and keep the full text in `title`.
+- A selected state that changes the box: a border, padding or weight added only when active. Every state carries the same border (transparent when idle), padding and font weight; the state is drawn with color and background.
+- Loading that replaces content with something of another height. A loading or empty state keeps the size of the loaded content (`min-height`, skeleton rows of the real height), and an image gets `width` and `height` or `aspect-ratio`.
+- Popovers, menus, dialogs and toasts placed in the flow. They go into a layer (the top layer, `position: fixed` or absolute) and never push siblings.
+- A late web font with other metrics. Use `font-display: swap` with a fallback tuned by `size-adjust`, or a system font stack.
+
+Check it in the browser rather than by eye. Before the interactions, start an observer on the page, then switch every tab and cabinet, open each panel and let data load:
+
+```js
+window.__shifts = [];
+new PerformanceObserver((list) => {
+  for (const e of list.getEntries()) {
+    window.__shifts.push({ value: e.value, input: e.hadRecentInput,
+      nodes: e.sources.map((s) => s.node?.className || s.node?.nodeName) });
+  }
+}).observe({ type: 'layout-shift', buffered: true });
+```
+
+Shifts with `input: true` still count here: a click on a tab must not move the tab bar. Any entry whose nodes belong to the navigation, the header or the tab bar is a defect; content below a newly opened section may move only when the user asked for that section.
 
 ## Marks of state
 

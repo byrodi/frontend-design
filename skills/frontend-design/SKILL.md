@@ -33,6 +33,8 @@ All skill files live in `${CLAUDE_SKILL_DIR}`, the folder that contains this SKI
 
 **Pictures beat long text.** Show the result with a real screenshot, a subject illustration, a preview or a diagram, and add a short caption. A live example is better than a description of its features. An icon does not replace a meaningful picture. Keep action names, errors, values and accessible labels as text, never hidden inside an image. Use existing assets or an available generation tool when it helps; SVG and CSS suit diagrams. Do not require a specific MCP server or generator.
 
+**Nothing on screen jumps.** Scaling between screen sizes is expected, but within one size a tab switch, a cabinet switch, an opened panel, loaded data or a new notice never moves what is already on screen. Chrome has fixed widths and reserved slots, selected states keep the same box, the scrollbar gutter is stable, overlays live in a layer. The causes, fixes and the browser check are in the "Layout stability" section of `${CLAUDE_SKILL_DIR}/references/design-system.md`.
+
 **Simplicity beats feature count.** Pick one main task per screen and one main next step. Offer sensible defaults and reveal rare settings on demand. Do not add pricing, analytics, filters, extra pages or settings without a need. Keep explicitly requested features and shorten the path to them.
 
 ## Brand
@@ -45,7 +47,7 @@ The author's own sites, projects, profiles and covers carry the "rodi." brand: a
 2. Read `${CLAUDE_SKILL_DIR}/references/design-system.md` for the palette, sizes, layouts and the marks of state (notice bar, hatch, dashed frames). Pick the scale for the task, a landing page or a working interface. For a targeted edit, keep the neighbouring patterns and do not start an unrequested full redesign.
 3. Use `${CLAUDE_SKILL_DIR}/assets/tokens.css` as the base theme. Carry the tokens into CSS variables, Tailwind, MUI or the project's existing system without replacing its stack. For a new interface or a visual choice, open `${CLAUDE_SKILL_DIR}/assets/interactive-starter.html`, a self-contained working example with an SVG preview, choice cards and feedback. Copy the parts you need together with their CSS and adapt the data and composition.
 4. Implement the real main scenario. In a demo, state its limits clearly. In a product, wire actions to state and the existing API; a success message must mean real success.
-5. Check narrow and wide screens, the keyboard, long labels, selection states and errors. With a browser available, look at screenshots and walk through the main scenario. Without one, report that limit and do not claim visual testing.
+5. Check narrow and wide screens, the keyboard, long labels, selection states and errors. With a browser available, look at screenshots, walk through the main scenario and record layout shifts while switching tabs and cabinets, opening panels and loading data. Without one, report that limit and do not claim visual testing.
 
 ## Definition of done
 
@@ -56,6 +58,7 @@ The author's own sites, projects, profiles and covers carry the "rodi." brand: a
 - Controls work from the keyboard, focus is visible, targets are comfortable to tap. Drag and drop has a path through buttons or selection, and hover is never the only way to learn or do something.
 - Images have meaningful alt text, decorative ones get an empty alt or aria-hidden. Status is clear without color, through text or an icon. Animation respects prefers-reduced-motion.
 - On mobile there is no horizontal overflow and no hidden main action. Long names and translations do not break the grid.
+- Switching tabs, cabinets or accounts, opening a panel, loading data and showing a notice move nothing that was already on screen; the navigation, header and tab bar stay identical across sections. With a browser, the layout-shift observer shows no entry in them.
 - No dead buttons, no decorative charts with made-up numbers, no endless animation and no unrequested features.
 
 The skill needs no network. The palette, examples and starter are all in this folder.
