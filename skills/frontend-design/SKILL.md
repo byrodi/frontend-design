@@ -35,6 +35,8 @@ All skill files live in `${CLAUDE_SKILL_DIR}`, the folder that contains this SKI
 
 **Nothing on screen jumps.** Scaling between screen sizes is expected, but within one size a tab switch, a cabinet switch, an opened panel, loaded data or a new notice never moves what is already on screen. Chrome has fixed widths and reserved slots, selected states keep the same box, the scrollbar gutter is stable, overlays live in a layer. The causes, fixes and the browser check are in the "Layout stability" section of `${CLAUDE_SKILL_DIR}/references/design-system.md`.
 
+**Every wrong move gets an answer.** Feedback stays in place, no pop-up windows, but it is never silent. A message for a refused action or an invalid field sits in its reserved line next to the thing the person touched, and each repeat of the same wrong action signals it again: a short highlight of the line and a fresh announcement to screen readers, even when the text is unchanged. A person who presses a past time twice must see the second press answered, or they keep pressing and think the product is broken. The pattern is in "Feedback that repeats" in `${CLAUDE_SKILL_DIR}/references/design-system.md`.
+
 **Simplicity beats feature count.** Pick one main task per screen and one main next step. Offer sensible defaults and reveal rare settings on demand. Do not add pricing, analytics, filters, extra pages or settings without a need. Keep explicitly requested features and shorten the path to them.
 
 ## Brand
@@ -58,6 +60,7 @@ The author's own sites, projects, profiles and covers carry the "rodi." brand: a
 - Controls work from the keyboard, focus is visible, targets are comfortable to tap. Drag and drop has a path through buttons or selection, and hover is never the only way to learn or do something.
 - Images have meaningful alt text, decorative ones get an empty alt or aria-hidden. Status is clear without color, through text or an icon. Animation respects prefers-reduced-motion.
 - On mobile there is no horizontal overflow and no hidden main action. Long names and translations do not break the grid.
+- Every refused action and invalid input answers in place, each time it happens: pressing the same wrong thing again highlights its message again and announces it again.
 - Switching tabs, cabinets or accounts, opening a panel, loading data and showing a notice move nothing that was already on screen; the navigation, header and tab bar stay identical across sections. With a browser, the layout-shift observer shows no entry in them.
 - No dead buttons, no decorative charts with made-up numbers, no endless animation and no unrequested features.
 

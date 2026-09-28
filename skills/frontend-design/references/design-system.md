@@ -105,6 +105,27 @@ new PerformanceObserver((list) => {
 
 Shifts with `input: true` still count here: a click on a tab must not move the tab bar. Any entry whose nodes belong to the navigation, the header or the tab bar is a defect; content below a newly opened section may move only when the user asked for that section.
 
+### Feedback that repeats
+
+Refusals and validation errors are answered in place, in a line reserved next to the control (so nothing jumps), never in a pop-up window. The line must answer every attempt, not only the first: once a message is on screen, a second identical press changes nothing visible, and the person keeps pressing. So every attempt re-signals:
+
+- The message element is re-created on each attempt: keep a counter in state and use it as the element's `key`, so a CSS animation restarts and the live region (`role="alert"` for errors, `role="status"` for notices) announces the text again.
+- The signal is a short highlight of the reserved line, about 600 ms: the background or the left bar flashes to the error color and settles back. It changes color only, never position or size, so it respects `prefers-reduced-motion` and moves nothing.
+- A field error works the same way on each submit: the field's message flashes again and focus returns to the first invalid field.
+- One shared hook or component owns this, so every screen answers the same way.
+
+```css
+@keyframes fd-flash { from { background: var(--fd-rose-soft); } to { background: transparent; } }
+.fd-notice--flash { animation: fd-flash 600ms ease-out; }
+```
+
+```tsx
+const [attempt, setAttempt] = useState(0);
+const refuse = (text: string) => { setMessage(text); setAttempt((n) => n + 1); };
+// ...
+{message ? <p key={attempt} className="fd-notice fd-notice--error fd-notice--flash" role="alert">{message}</p> : null}
+```
+
 ## Marks of state
 
 Beyond fill and text the family draws state with three devices: a bar on the left edge, a hatch and a dashed frame. Each device carries one meaning, so a reader learns it once and reads it everywhere. The words on the element still say what the state is; the drawing only lets the eye find it.
