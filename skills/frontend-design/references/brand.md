@@ -19,11 +19,11 @@ Brand pink is the identity color and is slightly deeper than the UI accent `#e47
 - The period is the signature. It always takes the accent color (brand ink on pink, brand pink on light) and never matches the letters.
 - The short mark is `r.`, used for avatars and icons.
 - Keep clear space of at least the height of `o` around the wordmark. Do not stretch it, outline it, add shadows or gradients, or place it on a busy photo.
-- Discord status and signatures use the text form "by rodi.".
+- Signatures and status lines use the text form "by rodi.".
 
 ## Motion
 
-The wordmark is written like handwriting: letters draw in one after another, the dot of `i` pops in and the period drops in with a small bounce. On the web it plays once on load and respects prefers-reduced-motion. The looping version is only for the animated banner. Its first frame shows the full logo, because static previews show the first frame.
+The wordmark is written like handwriting: letters draw in one after another, the dot of `i` pops in and the period drops in, lands on the baseline and bounces a few times. It never sinks below the line. On the web it plays once on load and respects prefers-reduced-motion. The looping version is only for the animated banner. Its first frame shows the full logo, because static previews show the first frame.
 
 ## Files
 
@@ -33,10 +33,13 @@ All files live in `${CLAUDE_SKILL_DIR}/assets/brand/` and are produced by `gener
 | --- | --- |
 | `logo-rodi.svg` | Wordmark for light pages, transparent background |
 | `logo-rodi-animated.svg` | Same wordmark, draws in once; embed with `<img>` or inline |
-| `logo-rodi-on-rose.svg` | Wordmark on a brand pink plate |
+| `logo-rodi-on-rose.svg` | Wordmark on a brand pink plate, 500x180 |
 | `mark-r.svg` | `r.` icon for light backgrounds, fits a favicon |
 | `avatar-mark.svg`, `avatar-mark.png` | 1024 px avatar, brand pink with a cream `r.` |
-| `banner-discord.gif`, `banner-discord.png` | 680x240 profile banner, animated and static |
-| `header-1500x500.png` | Header for X, Twitch and similar services |
+| `avatar-plain.png` | Plain brand pink avatar, 1024 px |
+| `banner.gif`, `banner.png` | 680x240 profile banner with the wordmark in the center, animated and static |
+| `header-1500x500.png` | Header, 1500x500 |
 
-In a Discord profile the avatar covers the lower left part of the banner, so the wordmark sits right of center. Profile theme colors: primary `#d78494`, accent `#efccd4`.
+For the GitHub profile, copy `banner.gif` as `rodi.gif` and `banner.png` as `rodi.png`. Generic banner filenames can match ad-blocking rules. In a README, wrap `rodi.gif` in `<picture>` with `rodi.png` as the source for `(prefers-reduced-motion: reduce)`.
+
+Profile theme colors: primary `#d78494`, accent `#efccd4`.

@@ -82,13 +82,22 @@ def write(name, text):
     with open(f"{OUT}/{name}", "w") as fh: fh.write(text + "\n")
 
 # Web version: draws once on load, no loop, still for prefers-reduced-motion.
+# The period follows the same curve as bounce(): it lands on the baseline and
+# hops three times, each hop lower, and never sinks below the line.
 ANIMATED_CSS = """
 path{stroke-dasharray:1 2;stroke-dashoffset:1;opacity:0;animation:draw .5s cubic-bezier(.45,0,.25,1) forwards}
 .i{transform-box:fill-box;transform-origin:center;transform:scale(0);animation:pop .3s 1.15s cubic-bezier(.3,1.6,.5,1) forwards}
-.p{transform:translateY(-200px);opacity:0;animation:drop .7s 1.35s cubic-bezier(.5,0,.5,1.4) forwards}
+.p{transform:translateY(-200px);opacity:0;animation:drop .7s 1.35s forwards}
 @keyframes draw{0%{opacity:1}to{opacity:1;stroke-dashoffset:0}}
 @keyframes pop{to{transform:scale(1)}}
-@keyframes drop{0%{opacity:1}to{opacity:1;transform:none}}
+@keyframes drop{0%{opacity:1;transform:translateY(-200px);animation-timing-function:cubic-bezier(.33,0,.67,.33)}
+36.4%{transform:none;animation-timing-function:cubic-bezier(.33,.67,.67,1)}
+54.5%{transform:translateY(-50px);animation-timing-function:cubic-bezier(.33,0,.67,.33)}
+72.7%{transform:none;animation-timing-function:cubic-bezier(.33,.67,.67,1)}
+81.8%{transform:translateY(-12.5px);animation-timing-function:cubic-bezier(.33,0,.67,.33)}
+90.9%{transform:none;animation-timing-function:cubic-bezier(.33,.67,.67,1)}
+95.5%{transform:translateY(-3px);animation-timing-function:cubic-bezier(.33,0,.67,.33)}
+to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){path,.i,.p{animation:none;stroke-dashoffset:0;transform:none;opacity:1}}
 """
 
@@ -110,16 +119,16 @@ OUT = os.path.dirname(os.path.abspath(__file__))
 HOLD = 2.2  # frame 0 shows the full logo: static previews use the first frame
 T, FPS = 5.0, 25
 W, H = 680, 240
-BANNER_ARGS = (W * 0.66, H * 0.46, 270)
+BANNER_ARGS = (W * 0.5, H * 0.5, 270)  # wordmark in the center
 
 with tempfile.TemporaryDirectory() as tmp:
     for f in range(int(T * FPS)):
         render(banner(W, H, (HOLD + f / FPS) % T, *BANNER_ARGS), f"{tmp}/f{f:03d}.png")
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-framerate", str(FPS), "-i", f"{tmp}/f%03d.png",
                     "-vf", "split[a][b];[a]palettegen=max_colors=32:stats_mode=full[p];[b][p]paletteuse=dither=none",
-                    "-loop", "0", f"{OUT}/banner-discord.gif"], check=True)
+                    "-loop", "0", f"{OUT}/banner.gif"], check=True)
 
-render(banner(W, H, HOLD, *BANNER_ARGS), f"{OUT}/banner-discord.png")
+render(banner(W, H, HOLD, *BANNER_ARGS), f"{OUT}/banner.png")
 render(banner(1500, 500, HOLD, 750, 250, 620), f"{OUT}/header-1500x500.png")
 
 # Wordmark: on the brand pink, and on a light page.
@@ -137,3 +146,4 @@ avatar = svg(1024, 1024, f'<rect width="1024" height="1024" fill="{ROSE}"/>'
                          f'<g transform="{place(MARK_BBOX, 512, 512, 400, by_height=True)}">{mark()}</g>')
 write("avatar-mark.svg", avatar)
 render(avatar, f"{OUT}/avatar-mark.png")
+render(svg(1024, 1024, f'<rect width="1024" height="1024" fill="{ROSE}"/>'), f"{OUT}/avatar-plain.png")
