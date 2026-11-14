@@ -19,7 +19,7 @@
     .fd-nav a[aria-current] { color: var(--fd-rose-strong); background: var(--fd-rose-soft); }
     .fd-nav .nav-title { margin-bottom: 14px; color: var(--fd-text); font-size: 17px; letter-spacing: -.02em; }
     .fd-main { min-width: 0; padding: clamp(20px, 4vw, 48px); }
-    .fd-main > * { max-width: 1040px; }
+    .fd-main > * { max-width: 1320px; margin-inline: auto; }
 
     /* Shared pieces. */
     h1, h2, h3, p { margin: 0; }
@@ -70,6 +70,7 @@
 
     /* Colors. */
     .groups { columns: 2; column-gap: 16px; }
+    @media (min-width: 1500px) { .groups { columns: 3; } }
     .group { break-inside: avoid; margin-bottom: 16px; overflow: hidden; }
     .group h3 { margin: 0; padding: 14px 16px 10px; font-size: 15px; }
     .sw { width: 100%; display: grid; grid-template-columns: 40px minmax(0, 1fr) 58px; gap: 14px; align-items: center; padding: 11px 16px; border: 0; background: none; color: inherit; text-align: left; cursor: pointer; }
