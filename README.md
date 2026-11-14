@@ -4,9 +4,9 @@ Light pink-plum design system for sites, web apps and desktop UI, with CSS token
 
 A skill for Claude Code and Codex. The agent applies the style when you ask for a site, landing page, web app or component in it.
 
-![Interactive starter with a day planning demo, rendered in Chrome](docs/preview.png)
+![Skill reference page with the palette and the color tokens, rendered in Chrome](docs/preview.png)
 
-[Open the live demo](https://byrodi.github.io/frontend-design/)
+[Open the skill reference](https://byrodi.github.io/frontend-design/)
 
 ## What you get
 

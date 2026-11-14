@@ -1,0 +1,982 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fcfafb">
+  <meta name="description" content="Reference page of the frontend-design skill with its color tokens, scales, components, marks of state, feedback rules and the rodi. brand kit.">
+  <title>frontend-design, the skill reference</title>
+  <link rel="icon" href="brand/mark-r.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    /* Page shell: the working layout from the design reference. */
+    html { scrollbar-gutter: stable; scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+    .fd-app { min-height: 100svh; display: grid; grid-template-columns: 226px minmax(0, 1fr); background: var(--fd-bg-app); }
+    .fd-nav { position: sticky; top: 0; align-self: start; height: 100svh; overflow-y: auto; padding: 28px 16px; background: var(--fd-surface); border-right: 1px solid var(--fd-line-app); }
+    .fd-nav a { display: block; padding: 9px 14px; border: 1px solid transparent; border-radius: var(--fd-radius-sm); color: var(--fd-muted); font-size: 15px; font-weight: 600; text-decoration: none; white-space: nowrap; }
+    .fd-nav a:focus-visible { outline-offset: -3px; }
+    .fd-nav a[aria-current] { color: var(--fd-rose-strong); background: var(--fd-rose-soft); }
+    .fd-nav .nav-title { margin-bottom: 14px; color: var(--fd-text); font-size: 17px; letter-spacing: -.02em; }
+    .fd-main { min-width: 0; padding: clamp(20px, 4vw, 48px); }
+    .fd-main > * { max-width: 1040px; }
+
+    /* Shared pieces. */
+    h1, h2, h3, p { margin: 0; }
+    .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    .ic { width: 22px; height: 22px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+    code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    code { font-size: .92em; }
+    a { color: var(--fd-rose); text-underline-offset: 4px; }
+    .sec { padding-block: 44px; border-top: 1px solid var(--fd-line); scroll-margin-top: 8px; }
+    .sec > h2 { font-size: 30px; line-height: 1.15; letter-spacing: -.03em; }
+    .lead { max-width: 68ch; margin-top: 8px; color: var(--fd-muted); }
+    .sec h3 { margin: 36px 0 6px; font-size: 19px; letter-spacing: -.015em; }
+    .sec h3 + p { max-width: 68ch; color: var(--fd-muted); }
+    .block { margin-top: 18px; }
+    .pad { padding: 20px; }
+    .rows > * + * { border-top: 1px solid var(--fd-line-app); }
+    .grid2, .grid3 { display: grid; gap: 16px; }
+    .grid2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid3 { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+    .cap { display: block; margin-top: 10px; color: var(--fd-muted); font-size: 13.5px; }
+    .line { min-height: 51px; margin-top: 14px; }
+    @keyframes flash { from { background: color-mix(in srgb, var(--fd-rose) 26%, var(--fd-surface)); } }
+    .flash { animation: flash 600ms ease-out; }
+    pre { margin: 0; padding: 14px 16px; overflow-x: auto; border: 1px solid var(--fd-line); border-radius: var(--fd-radius-sm); background: var(--fd-surface); font-size: 13.5px; line-height: 1.6; }
+    .scroll-x { overflow-x: auto; }
+    .tbl { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+    .tbl th, .tbl td { padding: 11px 16px; border-top: 1px solid var(--fd-line-app); text-align: left; vertical-align: middle; }
+    .tbl thead th { border-top: 0; color: var(--fd-muted); font-size: 13px; font-weight: 600; white-space: nowrap; }
+    .pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border: 1px solid transparent; border-radius: 999px; background: var(--fd-rose-soft); color: var(--fd-rose-strong); font-size: 13px; font-weight: 600; }
+    .pill--plum { background: var(--fd-plum-soft); color: var(--fd-plum-text); }
+    .pill--plain { border-color: var(--fd-line); background: var(--fd-bg-app); color: var(--fd-muted); }
+
+    /* Overview. */
+    .hero { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 48px; align-items: center; padding-block: 16px 56px; }
+    .eyebrow { color: var(--fd-rose); font-size: 14px; font-weight: 600; }
+    .hero h1 { margin: 10px 0 18px; font-size: clamp(2.25rem, 5vw, 4.25rem); font-weight: 650; line-height: 1.05; letter-spacing: -.045em; overflow-wrap: anywhere; }
+    .hero .lead { font-size: 18px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+    .credit { display: inline-flex; align-items: center; gap: 8px; margin-top: 26px; color: var(--fd-muted); font-size: 14px; }
+    .glance { position: relative; padding: 24px; }
+    .glance::before { content: ""; position: absolute; inset: -20px 0; z-index: -1; background: radial-gradient(ellipse, #f9e5eea6, transparent 70%); pointer-events: none; }
+    .glance { z-index: 0; }
+    .dots { display: flex; gap: 10px; margin-bottom: 18px; }
+    .dots span { flex: 1; aspect-ratio: 1; max-width: 56px; border-radius: var(--fd-radius-sm); background: var(--c); box-shadow: inset 0 0 0 1px rgb(41 36 42 / 10%); }
+    .glance-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .glance-grid > * { min-height: 64px; display: flex; align-items: center; padding: 10px 14px; border-radius: var(--fd-radius-sm); font-size: 14px; }
+    .glance .fd-notice { grid-column: 1 / -1; }
+
+    /* Colors. */
+    .groups { columns: 2; column-gap: 16px; }
+    .group { break-inside: avoid; margin-bottom: 16px; overflow: hidden; }
+    .group h3 { margin: 0; padding: 14px 16px 10px; font-size: 15px; }
+    .sw { width: 100%; display: grid; grid-template-columns: 40px minmax(0, 1fr) 58px; gap: 14px; align-items: center; padding: 11px 16px; border: 0; background: none; color: inherit; text-align: left; cursor: pointer; }
+    .sw:focus-visible { outline-offset: -3px; }
+    @media (hover: hover) { .sw:hover { background: var(--fd-bg-app); } }
+    .chip { width: 40px; height: 40px; border-radius: var(--fd-radius-sm); background: var(--c); box-shadow: inset 0 0 0 1px rgb(41 36 42 / 12%); }
+    .sw b { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13.5px; }
+    .sw code { margin-left: 8px; color: var(--fd-muted); }
+    .sw small { display: block; color: var(--fd-muted); font-size: 13px; }
+    .sw-act { justify-self: end; padding: 2px 6px; border-radius: 6px; color: var(--fd-rose); font-size: 13px; font-weight: 600; }
+    .aa { display: inline-grid; place-items: center; width: 44px; height: 32px; border-radius: 8px; font-weight: 700; box-shadow: inset 0 0 0 1px rgb(41 36 42 / 10%); }
+    .aa i { width: 22px; height: 0; border-top: 3px solid; }
+    .aa b { width: 18px; height: 18px; border-radius: 5px; background: currentColor; }
+    .tbl .num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .verdict { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+    .verdict .ic { width: 18px; height: 18px; }
+    .verdict--ok { color: var(--fd-success); }
+    .verdict--bad { color: var(--fd-error); }
+    .verdict--fill { color: var(--fd-muted); }
+
+    /* Scale. */
+    .specimen { padding: 18px 20px; }
+    .specimen p { color: var(--fd-text); overflow-wrap: anywhere; }
+    .sp-landing { font-size: clamp(2.75rem, 7vw, 7rem); font-weight: 650; line-height: 1.06; letter-spacing: -.045em; }
+    .sp-app { font-size: 30px; font-weight: 650; line-height: 1.2; letter-spacing: -.03em; }
+    .sp-body { font-size: 16px; line-height: 1.55; max-width: 62ch; }
+    .sp-cap { font-size: 13px; line-height: 1.45; }
+    .space { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+    .space li { display: grid; grid-template-columns: 34px minmax(0, 1fr); align-items: center; gap: 12px; font-size: 13.5px; }
+    .space span { height: 12px; border-radius: 4px; background: var(--fd-accent); }
+    .radii { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .radii div { font-size: 13.5px; }
+    .radii i { display: block; height: 64px; margin-bottom: 8px; border: 1px solid var(--fd-control-line); background: var(--fd-rose-soft); }
+    .track { position: relative; height: 44px; margin-top: 12px; border-radius: 999px; background: var(--fd-bg-app); border: 1px solid var(--fd-line); }
+    .track span { position: absolute; top: 5px; left: 5px; width: 32px; height: 32px; border-radius: 50%; background: var(--fd-accent); transition: left var(--fd-ease); }
+    .track.is-end span { left: calc(100% - 37px); }
+    .icons { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 0; padding: 0; list-style: none; }
+    .icons li { display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--fd-muted); }
+    .icons .ic { color: var(--fd-text); width: 24px; height: 24px; }
+
+    /* Components. */
+    .demo-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+    .field label { display: block; margin-bottom: 6px; font-weight: 600; }
+    .field input[type="text"], .num-in { width: 100%; min-height: 44px; padding: 10px 14px; border: 1px solid var(--fd-control-line); border-radius: var(--fd-radius-sm); background: var(--fd-surface); color: var(--fd-text); }
+    .field input[aria-invalid="true"] { border-color: var(--fd-error); box-shadow: inset 0 0 0 1px var(--fd-error); }
+    .field-line { min-height: 26px; margin-top: 6px; font-size: 14px; }
+    .field-line p { display: inline-block; padding: 1px 6px; margin-left: -6px; border-radius: 6px; color: var(--fd-muted); }
+    .field-line p[role="alert"] { color: var(--fd-error); }
+    .choices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; border: 0; padding: 0; margin: 0; min-width: 0; }
+    .choices legend { padding: 0; margin-bottom: 12px; font-weight: 600; }
+    .choice { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 10px; align-items: start; padding: 18px; border: 1px solid var(--fd-control-line); border-radius: var(--fd-radius-md); background: var(--fd-surface); cursor: pointer; }
+    .choice:has(input:checked) { background: var(--fd-rose-soft); border-color: var(--fd-rose); box-shadow: inset 0 0 0 1px var(--fd-rose); }
+    .choice:has(input:focus-visible) { outline: 3px solid var(--fd-rose); outline-offset: 4px; }
+    .choice input { width: 18px; height: 18px; margin: 3px 0 0; accent-color: var(--fd-rose); }
+    .choice strong, .choice small { display: block; }
+    .choice small { margin-top: 4px; color: var(--fd-muted); font-size: 14px; }
+
+    /* Marks of state. */
+    .stack { display: grid; gap: 10px; }
+    .note-sm { padding: 10px 14px; border-left: 3px solid var(--fd-plum); border-radius: 0 var(--fd-radius-sm) var(--fd-radius-sm) 0; background: var(--fd-plum-soft); font-size: 14.5px; }
+    .slot { min-height: 46px; }
+    .slot > * { min-height: 46px; display: flex; align-items: center; }
+    .slot .fd-ghost { padding: 10px 14px; border-radius: var(--fd-radius-sm); font-size: 14.5px; }
+    .tile { min-height: 92px; padding: 14px 16px; border-radius: var(--fd-radius-md); font-size: 14.5px; }
+    .tile strong { display: block; }
+    .tile small { display: block; margin-top: 2px; font-size: 13.5px; }
+    .fd-hatch.tile { border: 1px solid var(--fd-line); }
+    .fd-hatch--card.tile { border-color: var(--fd-control-line); }
+    .fd-hatch__title { text-decoration: line-through; text-decoration-thickness: 1.5px; }
+    .frame { padding: 13px 15px; border: 2px dashed var(--fd-plum-text); background: var(--fd-surface); }
+    .frame--unsaved { border-color: var(--fd-rose); }
+    .frame--unsaved small { color: var(--fd-rose-strong); font-weight: 600; }
+    .frame .ic { float: right; color: var(--fd-plum-text); }
+    .fd-ghost.tile { display: grid; place-items: center; }
+    .fd-zone p { margin-bottom: 12px; font-size: 14.5px; }
+    .fd-zone .line { min-height: 51px; margin-top: 12px; }
+    .mark-row { display: grid; grid-template-columns: minmax(0, 240px) minmax(0, 1fr); gap: 20px; align-items: center; padding: 14px 20px; }
+    .mark-row dl { margin: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 2px 12px; font-size: 14px; }
+    .mark-row dt { color: var(--fd-muted); }
+    .mark-row dd { margin: 0; }
+    .ev { min-height: 58px; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 14px; border-radius: var(--fd-radius-sm); font-size: 14.5px; }
+    .ev small { display: block; font-size: 13px; }
+    .ev--up { background: var(--fd-rose-soft); border-left: 3px solid var(--fd-rose); }
+    .ev--ok { background: var(--fd-rose-soft); border-left: 5px solid var(--fd-rose-strong); }
+    .ev--ok .ic { color: var(--fd-rose-strong); }
+    .ev--wait { padding: 8px 12px; background: var(--fd-surface); border: 2px dashed var(--fd-plum-text); }
+    .ev--wait .ic { color: var(--fd-plum-text); }
+    .ev--unsaved { padding: 8px 12px; background: var(--fd-surface); border: 2px dashed var(--fd-rose); }
+    .ev--unsaved small { color: var(--fd-rose-strong); font-weight: 600; }
+    .ev--done { background: var(--fd-plum-soft); border: 1px solid var(--fd-line); color: var(--fd-muted); }
+
+    /* Errors and feedback. */
+    .stepper { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+    .stepper output { flex-basis: 100%; font-size: 20px; font-weight: 650; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+
+    /* Layout stability. */
+    .seg { display: inline-flex; gap: 4px; max-width: 100%; padding: 4px; border: 1px solid var(--fd-control-line); border-radius: 999px; background: var(--fd-surface); }
+    .seg button { min-height: 44px; padding: 8px 18px; border: 1px solid transparent; border-radius: 999px; background: none; color: var(--fd-muted); font-weight: 600; cursor: pointer; }
+    .seg button[aria-selected="true"] { background: var(--fd-rose-soft); color: var(--fd-rose-strong); }
+    .tabpanels { display: grid; margin-top: 14px; }
+    .tabpanels > * { grid-area: 1 / 1; visibility: hidden; }
+    .tabpanels > .is-on { visibility: visible; }
+    .causes { margin: 0; }
+    .causes div { padding: 14px 20px; }
+    .causes div + div { border-top: 1px solid var(--fd-line-app); }
+    .causes dt { font-weight: 600; }
+    .causes dd { margin: 2px 0 0; color: var(--fd-muted); font-size: 14.5px; }
+    details { margin-top: 16px; }
+    summary { display: inline-block; padding: 10px 0; color: var(--fd-rose); font-weight: 600; cursor: pointer; }
+    details pre { margin-top: 6px; }
+
+    /* Choosing controls. */
+    .range-row { display: grid; grid-template-columns: minmax(0, 1fr) 84px auto; gap: 12px; align-items: center; }
+    .range-row input[type="range"] { width: 100%; min-height: 44px; accent-color: var(--fd-rose); }
+    .rad-preview { height: 120px; display: grid; place-items: center; border: 1px solid var(--fd-control-line); background: var(--fd-rose-soft); color: var(--fd-rose-strong); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+    /* Layouts. */
+    .dg { display: block; width: 100%; height: auto; }
+    .dg .bg { fill: var(--fd-bg); stroke: var(--fd-line); }
+    .dg .app { fill: var(--fd-bg-app); stroke: var(--fd-line); }
+    .dg .s { fill: var(--fd-surface); stroke: var(--fd-line); }
+    .dg .t { fill: var(--fd-text); }
+    .dg .m { fill: var(--fd-control-line); }
+    .dg .ac { fill: var(--fd-accent); }
+    .dg .rs { fill: var(--fd-rose-soft); }
+    .dg .rd { fill: var(--fd-rose-strong); }
+    .dg .pl { fill: var(--fd-plum); }
+    .dg .ps { fill: var(--fd-plum-soft); }
+    .dg .ln { stroke: var(--fd-line-app); }
+    .layout-cap { min-height: 3.2em; margin-top: 14px; color: var(--fd-muted); }
+
+    /* Brand. */
+    .brand-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .brand-grid .wide { grid-column: span 2; }
+    @media (max-width: 900px) { .brand-grid { grid-template-columns: minmax(0, 1fr); } .brand-grid .wide { grid-column: auto; } }
+    .brand-grid figure { margin: 0; padding: 20px; }
+    .brand-grid .art { height: 132px; display: grid; place-items: center; }
+    .brand-grid img { display: block; max-width: 100%; height: auto; }
+    .brand-grid figcaption { margin-top: 12px; color: var(--fd-muted); font-size: 13.5px; }
+    .brand-grid figcaption b { display: block; color: var(--fd-text); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13px; }
+    .round { border-radius: 50%; }
+    .plain-list { margin: 0; padding: 0; list-style: none; }
+    .plain-list li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 12px; padding: 12px 20px; }
+    .plain-list .ic { margin-top: 1px; color: var(--fd-rose); }
+    .plain-list--plum .ic { color: var(--fd-plum-text); }
+
+    /* Rules. */
+    .prio { padding: 18px 20px; }
+    .prio strong { display: block; margin-bottom: 4px; }
+    .prio p { color: var(--fd-muted); font-size: 14.5px; }
+
+    /* Install. */
+    .code { position: relative; }
+    .code pre { padding-right: 96px; }
+    .copy { position: absolute; top: 8px; right: 8px; min-width: 76px; min-height: 36px; padding: 4px 12px; border: 1px solid var(--fd-control-line); border-radius: 10px; background: var(--fd-surface); color: var(--fd-text); font-size: 13px; font-weight: 600; cursor: pointer; }
+    .steps { margin: 0; padding-left: 22px; max-width: 68ch; }
+    .steps li { padding-block: 4px; }
+    footer { padding-block: 24px 8px; border-top: 1px solid var(--fd-line); color: var(--fd-muted); font-size: 14px; }
+
+    @media (max-width: 900px) {
+      .fd-app { grid-template-columns: minmax(0, 1fr); }
+      .fd-nav { z-index: 5; height: auto; display: flex; gap: 4px; padding: 8px 16px; overflow-x: auto; scrollbar-width: none; border-right: 0; border-bottom: 1px solid var(--fd-line-app); }
+      .fd-nav .nav-title { margin: 0; }
+      .sec { scroll-margin-top: 64px; }
+      .hero { grid-template-columns: minmax(0, 1fr); gap: 32px; padding-bottom: 40px; }
+      .glance::before { inset: 0; }
+      .groups { columns: 1; }
+      .grid2, .choices { grid-template-columns: minmax(0, 1fr); }
+      .mark-row { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+      .line { min-height: 76px; }
+    }
+  </style>
+</head>
+<body class="fd-theme">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 4.5l8.5 14.5h-17z"/><path d="M12 10v4.5M12 17.2v.1"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5.5" y="10.5" width="13" height="9.5" rx="2.5"/><path d="M8.5 10.5V8a3.5 3.5 0 017 0v2.5"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 5.5h-8a2 2 0 00-2 2v8"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-dot" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.5"/></symbol>
+  </svg>
+
+  <div class="fd-app">
+    <nav class="fd-nav" aria-label="Sections">
+      <a class="nav-title" href="#top">frontend-design</a>
+      <a href="#colors">Colors</a>
+      <a href="#scale">Scale</a>
+      <a href="#components">Components</a>
+      <a href="#states">Marks of state</a>
+      <a href="#feedback">Feedback</a>
+      <a href="#stability">Stability</a>
+      <a href="#controls">Controls</a>
+      <a href="#layouts">Layouts</a>
+      <a href="#brand">Brand</a>
+      <a href="#rules">Rules</a>
+      <a href="#install">Install</a>
+    </nav>
+
+    <main class="fd-main">
+      <header class="hero" id="top">
+        <div>
+          <p class="eyebrow">Skill reference</p>
+          <h1>frontend-design</h1>
+          <p class="lead">A light pink-plum design system for sites, web apps and desktop UI. This page is drawn with the skill's own tokens.css. Every color, mark of state and rule below comes from the skill files.</p>
+          <div class="hero-actions">
+            <a class="fd-button fd-button--primary" href="#install">Install the skill</a>
+            <a class="fd-button" href="https://github.com/byrodi/frontend-design">View on GitHub</a>
+          </div>
+          <p class="credit"><img src="brand/mark-r.svg" alt="" width="17" height="18"> by rodi.</p>
+        </div>
+        <div class="glance fd-panel" role="img" aria-label="The palette and the three marks of state at a glance">
+          <div class="dots">
+            <span style="--c:var(--fd-accent)"></span><span style="--c:var(--fd-rose)"></span><span style="--c:var(--fd-rose-soft)"></span><span style="--c:var(--fd-plum)"></span><span style="--c:var(--fd-plum-soft)"></span><span style="--c:var(--fd-text)"></span>
+          </div>
+          <div class="glance-grid">
+            <p class="fd-notice">A bar on the left edge is a notice.</p>
+            <p class="fd-hatch" style="border:1px solid var(--fd-line)">A hatch is not available.</p>
+            <p style="border:2px dashed var(--fd-plum-text)">A dashed frame is not final.</p>
+          </div>
+        </div>
+      </header>
+
+      <section class="sec" id="colors" aria-labelledby="h-colors">
+        <h2 id="h-colors">Colors</h2>
+        <p class="lead">Twenty-four color tokens from tokens.css, each with one role. Press a row to copy its token. The values on the right of each name are read from the stylesheet, so they always match the skill.</p>
+        <div class="groups block">
+          <div class="group fd-panel rows">
+            <h3>Backgrounds</h3>
+            <button class="sw" type="button" data-token="--fd-bg" style="--c:var(--fd-bg)"><span class="chip"></span><span><b>--fd-bg</b><code>#fcfafb</code><small>Site background, large open areas</small></span><span class="sw-act">Copy</span></button>
+            <button class="sw" type="button" data-token="--fd-bg-app" style="--c:var(--fd-bg-app)"><span class="chip"></span><span><b>--fd-bg-app</b><code>#faf8f9</code><small>App background, the workspace</small></span><span class="sw-act">Copy</span></button>
+            <button class="sw" type="button" data-token="--fd-surface" style="--c:var(--fd-surface)"><span class="chip"></span><span><b>--fd-surface</b><code>#ffffff</code><small>Panels, lists, dialogs</small></span><span class="sw-act">Copy</span></button>
+          </div>
+          <div class="group fd-panel rows">
+            <h3>Text</h3>
+            <button class="sw" type="button" data-token="--fd-text" style="--c:var(--fd-text)"><span class="chip"></span><span><b>--fd-text</b><code>#29242a</code><small>Headings and content</small></span><span class="sw-act">Copy</span></button>
+            <button class="sw" type="button" data-token="--fd-muted" style="--c:var(--fd-muted)"><span class="chip"></span><span><b>--fd-muted</b><code>#74616c</code><small>Captions, hints</small></span><span class="sw-act">Copy</span></button>
+          </div>
+          <div class="group fd-panel rows">
+            <h3>Pink</h3>
+            <button class="sw" type="button" data-token="--fd-accent" style="--c:var(--fd-accent)"><span class="chip"></span><span><b>--fd-accent</b><code>#e47f93</code><small>Primary button, a single visual accent</small></span><span class="sw-act">Copy</span></button>
+            <button class="sw" type="button" data-token="--fd-accent-hover" style="--c:var(--fd-accent-hover)"><span class="chip"></span><span><b>--fd-accent-hover</b><code>#e98c9e</code><small>Primary button under the pointer</small></span><span class="sw-act">Copy</span></button>
+            <button class="sw" type="button" data-token="--fd-on-accent" style="--c:var(--fd-on-accent)"><span class="chip"></span><span><b>--fd-on-accent</b><code>#392029</code><small>Label of the pink button</small></span><span class="sw-act">Copy</span></button>
+            <button class="sw" type="button" data-token="--fd-rose" style="--c:var(--fd-rose)"><span class="chip"></span><span><b>--fd-rose</b><code>#a94460</code><small>Links, focus, active text</small></span><span class="sw-act">Copy</span></button>
+            <button class="sw" type="button" data-token="--fd-rose-strong" style="--c:var(--fd-rose-strong)"><span class="chip"></span><span><b>--fd-rose-strong</b><code>#9a3f55</code><small>Selected navigation, outlined buttons</small></span><span class="sw-act">Copy</span></button>
+            <button class="sw" type="button" data-token="--fd-rose-soft" style="--c:var(--fd-rose-soft)"><span class="chip"></span><span><b>--fd-rose-soft</b><code>#fcecf0</code><small>Background of a selection or an icon</small></span><span class="sw-act">Copy</span></button>
+          </div>
+          <div class="group fd-panel rows">
+            <h3>Plum</h3>
+            <button class="sw" type="button" data-token="--fd-plum" style="--c:var(--fd-plum)"><span class="chip"></span><span><b>--fd-plum</b><code>#9272a8</code><small>Secondary branch of a diagram, illustration</small></span><span class="sw-act">Copy</span></button>
+            <button class="sw" type="button" data-token="--fd-plum-text" style="--c:var(--fd-plum-text)"><span class="chip"></span><span><b>--fd-plum-text</b><code>#715385</code><small>Plum that is dark enough for text and dashed frames</small></span><span class="sw-act">Copy</span></button>
+            <button class="sw" type="button" data-token="--fd-plum-soft" style="--c:var(--fd-plum-soft)"><span class="chip"></span><span><b>--fd-plum-soft</b><code>#f2edf8</code><small>Additional surface</small></span><span class="sw-act">Copy</span></button>
+          </div>
+          <div class="group fd-panel rows">
+            <h3>Lines</h3>
+            <button class="sw" type="button" data-token="--fd-line" style="--c:var(--fd-line)"><span class="chip"></span><span><b>--fd-line</b><code>#eee4e9</code><small>Decorative separation of surfaces</small></span><span class="sw-act">Copy</span></button>
+            <button class="sw" type="button" data-token="--fd-line-app" style="--c:var(--fd-line-app)"><span class="chip"></span><span><b>--fd-line-app</b><code>#e9edf2</code><small>Row dividers</small></span><span class="sw-act">Copy</span></button>
+            <button class="sw" type="button" data-token="--fd-control-line" style="--c:var(--fd-control-line)"><span class="chip"></span><span><b>--fd-control-line</b><code>#a88c9a</code><small>Border of buttons, fields and choice cards</small></span><span class="sw-act">Copy</span></button>
+          </div>
+          <div class="group fd-panel rows">
+            <h3>Meaning</h3>
+            <button class="sw" type="button" data-token="--fd-warning" style="--c:var(--fd-warning)"><span class="chip"></span><span><b>--fd-warning</b><code>#b86e00</code><small>Amber line or icon of a caution, never a text color</small></span><span class="sw-act">Copy</span></button>
+            <button class="sw" type="button" data-token="--fd-error" style="--c:var(--fd-error)"><span class="chip"></span><span><b>--fd-error</b><code>#a8324b</code><small>Line, outlined button and short text of a failure</small></span><span class="sw-act">Copy</span></button>
+            <button class="sw" type="button" data-token="--fd-success" style="--c:var(--fd-success)"><span class="chip"></span><span><b>--fd-success</b><code>#267348</code><small>Line and short text of a confirmed result</small></span><span class="sw-act">Copy</span></button>
+          </div>
+          <div class="group fd-panel rows">
+            <h3>Brand</h3>
+            <button class="sw" type="button" data-token="--fd-brand" style="--c:var(--fd-brand)"><span class="chip"></span><span><b>--fd-brand</b><code>#d78494</code><small>Avatar, banners, brand surfaces</small></span><span class="sw-act">Copy</span></button>
+            <button class="sw" type="button" data-token="--fd-brand-blush" style="--c:var(--fd-brand-blush)"><span class="chip"></span><span><b>--fd-brand-blush</b><code>#efccd4</code><small>Profile background next to brand pink</small></span><span class="sw-act">Copy</span></button>
+            <button class="sw" type="button" data-token="--fd-brand-cream" style="--c:var(--fd-brand-cream)"><span class="chip"></span><span><b>--fd-brand-cream</b><code>#fdeff2</code><small>Letters on brand pink</small></span><span class="sw-act">Copy</span></button>
+            <button class="sw" type="button" data-token="--fd-brand-ink" style="--c:var(--fd-brand-ink)"><span class="chip"></span><span><b>--fd-brand-ink</b><code>#8e3a50</code><small>The period on brand pink</small></span><span class="sw-act">Copy</span></button>
+          </div>
+        </div>
+
+        <h3 id="h-contrast">Contrast of the final pairs</h3>
+        <p>Your browser computes these ratios from the live tokens. Text needs 4.5 to 1, lines and icons need 3 to 1. Accent pink and plum stay below the text level on white, so they are used as fills and the label on them is dark.</p>
+        <div class="fd-panel scroll-x block">
+          <table class="tbl" aria-labelledby="h-contrast">
+            <thead><tr><th>Sample</th><th>Pair</th><th>Used for</th><th>Ratio</th><th>Needs</th><th>Result</th></tr></thead>
+            <tbody id="contrast"></tbody>
+          </table>
+          <noscript><p class="pad">The ratios are computed in the browser and need JavaScript.</p></noscript>
+        </div>
+      </section>
+
+      <section class="sec" id="scale" aria-labelledby="h-scale">
+        <h2 id="h-scale">Type and scale</h2>
+        <p class="lead">The font is a calm system sans-serif, <code>--fd-font</code>. Sizes come in two sets, one for a landing page and one for a working app.</p>
+        <div class="fd-panel rows block">
+          <div class="specimen"><p class="sp-landing">Calm and clear</p><span class="cap">Landing heading, <code>clamp(2.75rem, 7vw, 7rem)</code>, line-height 1.04 to 1.1, tracking about -.045em</span></div>
+          <div class="specimen"><p class="sp-app">Settings</p><span class="cap">App heading, 28 to 32 px</span></div>
+          <div class="specimen"><p class="sp-body">Content text sits at 14 to 16 px with a line-height between 1.45 and 1.65, so long paragraphs stay easy to read.</p><span class="cap">Content, 14 to 16 px</span></div>
+          <div class="specimen"><p class="sp-cap">A caption or a hint under a field</p><span class="cap">Captions, 12 to 14 px</span></div>
+        </div>
+        <div class="grid3 block">
+          <div class="fd-panel pad">
+            <h3 style="margin-top:0">Spacing grid</h3>
+            <ul class="space block" aria-label="Spacing steps in pixels">
+              <li><code>4</code><span style="width:4px"></span></li>
+              <li><code>8</code><span style="width:8px"></span></li>
+              <li><code>12</code><span style="width:12px"></span></li>
+              <li><code>16</code><span style="width:16px"></span></li>
+              <li><code>24</code><span style="width:24px"></span></li>
+              <li><code>32</code><span style="width:32px"></span></li>
+              <li><code>48</code><span style="width:48px"></span></li>
+              <li><code>64</code><span style="width:64px"></span></li>
+              <li><code>96</code><span style="width:96px"></span></li>
+            </ul>
+          </div>
+          <div class="fd-panel pad">
+            <h3 style="margin-top:0">Radii</h3>
+            <div class="radii block">
+              <div><i style="border-radius:var(--fd-radius-sm)"></i><code>--fd-radius-sm</code> 12 px, icon tiles and small fields</div>
+              <div><i style="border-radius:var(--fd-radius-md)"></i><code>--fd-radius-md</code> 17 px, buttons and lists</div>
+              <div><i style="border-radius:var(--fd-radius-lg)"></i><code>--fd-radius-lg</code> 24 px, large panels</div>
+              <div><i style="border-radius:999px"></i>Pill, short segments and statuses</div>
+            </div>
+          </div>
+          <div class="fd-panel pad">
+            <h3 style="margin-top:0">Shadow and motion</h3>
+            <p class="cap">This panel carries <code>--fd-shadow</code>. It is barely visible and only explains a layer. Motion answers an action in 140 to 220 ms. The token <code>--fd-ease</code> is 180 ms.</p>
+            <div class="track" id="track"><span></span></div>
+            <button class="fd-button block" type="button" id="track-btn" aria-pressed="false">Move the marker</button>
+          </div>
+        </div>
+        <h3>Icons</h3>
+        <p>Outline icons at 20 to 24 px with a 1.6 to 1.8 stroke, round caps and <code>currentColor</code>. Use the icon library the project already has.</p>
+        <ul class="icons block">
+          <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>confirmed</li>
+          <li><svg class="ic" aria-hidden="true"><use href="#i-clock"/></svg>waiting</li>
+          <li><svg class="ic" aria-hidden="true"><use href="#i-alert"/></svg>caution</li>
+          <li><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg>cancelled</li>
+          <li><svg class="ic" aria-hidden="true"><use href="#i-lock"/></svg>locked</li>
+          <li><svg class="ic" aria-hidden="true"><use href="#i-copy"/></svg>copy</li>
+        </ul>
+      </section>
+
+      <section class="sec" id="components" aria-labelledby="h-components">
+        <h2 id="h-components">Components</h2>
+        <p class="lead">Buttons and panels ship in tokens.css. The pill, the field and the choice card are small patterns built on the same tokens. Notices, hatches and dashed frames have their own section below.</p>
+        <div class="grid2 block">
+          <div class="fd-panel pad">
+            <div class="demo-row">
+              <a class="fd-button fd-button--primary" href="#install">Install the skill</a>
+              <a class="fd-button" href="#colors">See the colors</a>
+              <button class="fd-button" type="button" disabled>Disabled</button>
+            </div>
+            <span class="cap"><code>.fd-button</code> and <code>.fd-button--primary</code>. One pink button marks the main action of a screen. The label on pink is dark, never white.</span>
+          </div>
+          <div class="fd-panel pad">
+            <div class="demo-row">
+              <span class="pill">Live</span>
+              <span class="pill pill--plum">Archived</span>
+              <span class="pill pill--plain">Draft</span>
+            </div>
+            <span class="cap">Pills are kept for short statuses and segments. Pink is live, plum is finished or made by the system.</span>
+          </div>
+          <div class="fd-panel pad">
+            <p>This box is a <code>.fd-panel</code>, a white surface with a thin border, a 24 px radius and the soft shadow.</p>
+            <span class="cap">Related rows share one panel with dividers. A card for every row is too much.</span>
+          </div>
+          <div class="fd-panel pad field">
+            <label for="sample-field">Workspace name</label>
+            <input type="text" id="sample-field" autocomplete="off" placeholder="Type to try the field" aria-describedby="sample-hint">
+            <div class="field-line"><p id="sample-hint">A hint lives in a line that is always there.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec" id="states" aria-labelledby="h-states">
+        <h2 id="h-states">Marks of state</h2>
+        <p class="lead">State is drawn with three devices, and each one keeps a single meaning. The words on the element still name the state, so nothing depends on color alone.</p>
+
+        <h3>Left bar, a notice</h3>
+        <p>A surface with a thin border and a 4 px bar on its left edge. The color of the bar names the kind. The fill stays white or a soft tint.</p>
+        <div class="stack block">
+          <p class="fd-notice">Beta. Export is new and may still change. <code>.fd-notice</code></p>
+          <p class="fd-notice fd-notice--error">The file did not upload. The connection dropped. <code>.fd-notice--error</code></p>
+          <p class="fd-notice fd-notice--success">Saved. The new name is live. <code>.fd-notice--success</code></p>
+          <p class="fd-notice fd-notice--system">Archived by the system. <code>.fd-notice--system</code></p>
+          <div class="slot" id="note-slot"><p class="note-sm">A smaller note for the inside of a panel, with a 3 px plum bar on soft plum.</p></div>
+        </div>
+
+        <h3>Hatch, exists but not available</h3>
+        <p>Thin diagonal lines over an opaque soft fill. Lower opacity is not the same thing, because it makes the text unreadable.</p>
+        <div class="grid3 block">
+          <div class="tile fd-hatch"><strong>Not on this plan</strong><small class="fd-muted">Neutral hatch at 135 degrees for space that is closed or gone. <code>.fd-hatch</code></small></div>
+          <div class="tile fd-hatch fd-hatch--card"><strong class="fd-hatch__title">Weekly export</strong><small>Cancelled. Grey hatch at 45 degrees, the title struck through. <code>.fd-hatch--card</code></small></div>
+          <div class="tile fd-hatch fd-hatch--special"><strong>Reserved by you</strong><small class="fd-muted">Blush lines on soft plum for a block made on purpose. <code>.fd-hatch--special</code></small></div>
+        </div>
+
+        <h3>Dashed frame, not final</h3>
+        <p>A dashed border means the object is not settled, or the action inside deserves a second look. One caution zone and one danger zone per screen at most.</p>
+        <div class="grid3 block">
+          <div class="tile frame"><svg class="ic" aria-hidden="true"><use href="#i-clock"/></svg><strong>Request to join</strong><small class="fd-muted">Waiting for an answer. 2 px dashed plum.</small></div>
+          <div class="tile frame frame--unsaved"><strong>Profile title</strong><small>not saved</small><small class="fd-muted">2 px dashed deep rose.</small></div>
+          <div class="tile fd-ghost"><span>Empty slot, a 1 px dashed ghost. <code>.fd-ghost</code></span></div>
+        </div>
+        <div class="grid2 block">
+          <div class="fd-zone">
+            <p><strong>Caution zone.</strong> Reversible, but disruptive. This button puts every demo on this page back to its start.</p>
+            <button class="fd-button" type="button" id="reset-demos">Reset the demos</button>
+            <div class="line" id="reset-line"></div>
+          </div>
+          <div class="fd-zone fd-zone--danger">
+            <p><strong>Danger zone.</strong> Irreversible. This button deletes the small plum note from the left bar examples. Only a reload brings it back.</p>
+            <button class="fd-button" type="button" id="delete-note">Delete the note</button>
+            <div class="line" id="delete-line"></div>
+          </div>
+        </div>
+
+        <h3>Amber and red</h3>
+        <p>Amber says attention and red says danger or failure. Both appear on the edge of what they mark, as a line, an icon or an outlined button. Neither one fills a large area, and amber is never small text.</p>
+
+        <h3>Pink and plum side by side</h3>
+        <p>Pink is live and ahead, plum is finished or made by the system. The bar grows with certainty. A dashed frame or a hatch replaces the bar when the object is not settled or will not happen.</p>
+        <div class="fd-panel rows block">
+          <div class="mark-row"><div class="ev ev--up"><span><strong>Upcoming</strong><small>Team review</small></span></div><dl><dt>Fill</dt><dd>Soft rose</dd><dt>Edge</dt><dd>3 px rose bar on the left</dd><dt>Text</dt><dd>Main text</dd></dl></div>
+          <div class="mark-row"><div class="ev ev--ok"><span><strong>Confirmed</strong><small>Team review</small></span><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg></div><dl><dt>Fill</dt><dd>Soft rose</dd><dt>Edge</dt><dd>5 px dark rose bar, a check icon</dd><dt>Text</dt><dd>Main text</dd></dl></div>
+          <div class="mark-row"><div class="ev ev--wait"><span><strong>Waiting for an answer</strong><small>Team review</small></span><svg class="ic" aria-hidden="true"><use href="#i-clock"/></svg></div><dl><dt>Fill</dt><dd>Surface</dd><dt>Edge</dt><dd>2 px dashed plum, a clock icon</dd><dt>Text</dt><dd>Main text</dd></dl></div>
+          <div class="mark-row"><div class="ev ev--unsaved"><span><strong>Team review</strong><small>not saved</small></span></div><dl><dt>Fill</dt><dd>Surface</dd><dt>Edge</dt><dd>2 px dashed deep rose</dd><dt>Text</dt><dd>The words "not saved" in dark rose</dd></dl></div>
+          <div class="mark-row"><div class="ev ev--done"><span><strong>Team review</strong><small>Finished, 4 people came</small></span></div><dl><dt>Fill</dt><dd>Soft plum</dd><dt>Edge</dt><dd>1 px site border</dd><dt>Text</dt><dd>Muted, the outcome in words</dd></dl></div>
+          <div class="mark-row"><div class="ev fd-hatch fd-hatch--card"><span><strong class="fd-hatch__title">Team review</strong><small>Cancelled</small></span><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg></div><dl><dt>Fill</dt><dd>Grey hatch at 45 degrees</dd><dt>Edge</dt><dd>1 px control line, dashed if declined</dd><dt>Text</dt><dd>Muted, the title struck through</dd></dl></div>
+        </div>
+      </section>
+
+      <section class="sec" id="feedback" aria-labelledby="h-feedback">
+        <h2 id="h-feedback">Errors and feedback</h2>
+        <p class="lead">A refused action or an invalid field is answered in a line reserved next to the control. Pop-up windows are not used. Press the same wrong thing twice and the line flashes and is announced both times.</p>
+        <div class="grid2 block">
+          <div class="fd-panel pad">
+            <h3 style="margin-top:0">A refused action</h3>
+            <p class="cap" style="margin:0 0 16px">The team has 3 seats. Add a fourth, or remove one when nobody is left, and press again.</p>
+            <div class="stepper">
+              <output id="seat-out" for="seat-remove seat-add">2 of 3 seats used</output>
+              <button class="fd-button fd-button--primary" type="button" id="seat-add">Add a seat</button>
+              <button class="fd-button" type="button" id="seat-remove">Remove a seat</button>
+            </div>
+            <div class="line" id="seat-line"></div>
+            <p class="cap" id="seat-count">0 refusals answered so far.</p>
+          </div>
+          <form class="fd-panel pad field" id="name-form" novalidate>
+            <h3 style="margin-top:0">An invalid field</h3>
+            <p class="cap" style="margin:0 0 16px">Save with fewer than 3 characters, then save again. Focus returns to the field each time.</p>
+            <label for="pname">Project name</label>
+            <input type="text" id="pname" name="pname" autocomplete="off" aria-describedby="pname-line">
+            <div class="field-line" id="pname-line"><p>At least 3 characters.</p></div>
+            <button class="fd-button fd-button--primary" type="submit" style="margin-top:8px">Save the name</button>
+            <div class="line" id="form-line"></div>
+          </form>
+        </div>
+        <h3>How it is built</h3>
+        <p>The message element is created again on each attempt, so the CSS animation restarts and the live region speaks again. The flash changes color only and moves nothing.</p>
+        <pre class="block"><code>function say(line, text, kind) {
+  const p = document.createElement('p');
+  p.className = 'fd-notice flash fd-notice--' + kind;
+  p.setAttribute('role', kind === 'error' ? 'alert' : 'status');
+  p.textContent = text;
+  line.replaceChildren(p);
+}</code></pre>
+      </section>
+
+      <section class="sec" id="stability" aria-labelledby="h-stability">
+        <h2 id="h-stability">Layout stability</h2>
+        <p class="lead">Within one screen size, nothing already on screen moves when a tab switches, a panel opens or data loads. Switch the tabs below. The panel keeps the height of its longest content, and the counter under it comes from a real layout-shift observer.</p>
+        <div class="block">
+          <div class="seg" role="tablist" aria-label="Causes of layout shifts">
+            <button type="button" role="tab" id="tab-chrome" aria-controls="tp-chrome" aria-selected="true">Chrome</button>
+            <button type="button" role="tab" id="tab-states" aria-controls="tp-states" aria-selected="false" tabindex="-1">States</button>
+            <button type="button" role="tab" id="tab-loading" aria-controls="tp-loading" aria-selected="false" tabindex="-1">Loading</button>
+          </div>
+          <div class="tabpanels fd-panel">
+            <dl class="causes is-on" role="tabpanel" id="tp-chrome" aria-labelledby="tab-chrome">
+              <div><dt>The scrollbar appears and the whole page jumps sideways.</dt><dd>Put <code>scrollbar-gutter: stable</code> on the root and on every scrolling panel.</dd></div>
+              <div><dt>A control that exists only in some states pushes the content below it.</dt><dd>Give it a slot that exists in every state, or place it in a layer.</dd></div>
+              <div><dt>A sidebar or a toolbar grows with a long name.</dt><dd>Chrome gets fixed widths. Long names end with an ellipsis and keep the full text in <code>title</code>.</dd></div>
+            </dl>
+            <dl class="causes" role="tabpanel" id="tp-states" aria-labelledby="tab-states">
+              <div><dt>A selected state adds a border, padding or font weight.</dt><dd>Every state carries the same box. Color and background draw the state.</dd></div>
+              <div><dt>Popovers, menus, dialogs and toasts sit in the flow.</dt><dd>They go into a layer and never push their siblings.</dd></div>
+            </dl>
+            <dl class="causes" role="tabpanel" id="tp-loading" aria-labelledby="tab-loading">
+              <div><dt>Loading swaps the content for something of another height.</dt><dd>Keep the size with <code>min-height</code> and skeleton rows of the real height. Images get <code>width</code> and <code>height</code>.</dd></div>
+              <div><dt>A late web font arrives with other metrics.</dt><dd>Use <code>font-display: swap</code> with a fallback tuned by <code>size-adjust</code>, or a system font stack.</dd></div>
+            </dl>
+          </div>
+          <div class="line"><p class="fd-notice fd-notice--system" id="shift-count" role="status">Waiting for the layout-shift observer.</p></div>
+        </div>
+        <details>
+          <summary>Show the observer the skill runs in the browser</summary>
+          <pre><code>window.__shifts = [];
+new PerformanceObserver((list) => {
+  for (const e of list.getEntries()) {
+    window.__shifts.push({ value: e.value, input: e.hadRecentInput,
+      nodes: e.sources.map((s) => s.node?.className || s.node?.nodeName) });
+  }
+}).observe({ type: 'layout-shift', buffered: true });</code></pre>
+        </details>
+      </section>
+
+      <section class="sec" id="controls" aria-labelledby="h-controls">
+        <h2 id="h-controls">Choosing controls</h2>
+        <p class="lead">First remove the decisions nobody needs. Then give each remaining one a control that shows its result right away.</p>
+        <div class="fd-panel scroll-x block">
+          <table class="tbl">
+            <thead><tr><th>Task</th><th>Preferred approach</th></tr></thead>
+            <tbody>
+              <tr><td>Pick one of several options</td><td>Radio cards with previews and short names. The <a href="#layouts">layout chooser</a> below is one.</td></tr>
+              <tr><td>Set an approximate amount</td><td>A slider with the result, and an exact field when precision matters</td></tr>
+              <tr><td>Show relations between objects</td><td>A diagram with direct manipulation and an equivalent through selection or buttons</td></tr>
+              <tr><td>Upload an image</td><td>A drop zone, an accessible file picker button and a preview</td></tr>
+              <tr><td>Understand the effect of a setting</td><td>Before and after, or a live preview</td></tr>
+              <tr><td>Enter a name, address or search</td><td>A plain labeled field. An interactive layer does not help here.</td></tr>
+              <tr><td>Open a rare option</td><td>Details or another simple disclosure, like the observer snippet above</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>A slider, an exact field and a live preview</h3>
+        <p>Drag the slider or type a number from 0 to 32. The box shows the result at once.</p>
+        <div class="fd-panel pad block">
+          <div class="range-row">
+            <input type="range" id="rad" min="0" max="32" value="17" aria-label="Corner radius">
+            <input class="num-in" type="number" id="rad-n" min="0" max="32" value="17" inputmode="numeric" aria-label="Corner radius in pixels" aria-describedby="rad-line">
+            <span>px</span>
+          </div>
+          <div class="field-line" id="rad-line"><p>The radius goes from 0 to 32 px.</p></div>
+          <div class="rad-preview" id="rad-preview" style="border-radius:17px">17 px</div>
+        </div>
+      </section>
+
+      <section class="sec" id="layouts" aria-labelledby="h-layouts">
+        <h2 id="h-layouts">Two layouts from one family</h2>
+        <p class="lead">A landing page and a working interface share the tokens and differ in density. Pick one to see its parts. This page itself uses the working layout.</p>
+        <div class="grid2 block">
+          <form id="layout-form">
+            <fieldset class="choices">
+              <legend class="sr">Layout</legend>
+              <label class="choice"><input type="radio" name="layout" value="landing" checked><span><strong>Landing page</strong><small>A large heading and one visual proof</small></span></label>
+              <label class="choice"><input type="radio" name="layout" value="app"><span><strong>Working interface</strong><small>Density and overview come first</small></span></label>
+            </fieldset>
+            <p class="layout-cap" id="layout-cap" role="status">Short navigation, a concise heading with the main action, visual proof or a live example, and a simple footer.</p>
+          </form>
+          <div class="fd-panel pad">
+            <svg class="dg" id="dg-landing" viewBox="0 0 480 270" role="img" aria-label="Landing page scheme with navigation, a heading, a button, a preview panel and a footer">
+              <rect class="bg" x=".5" y=".5" width="479" height="269" rx="16"/>
+              <rect class="t" x="24" y="20" width="44" height="8" rx="4"/><rect class="m" x="380" y="21" width="32" height="6" rx="3"/><rect class="m" x="424" y="21" width="32" height="6" rx="3"/>
+              <rect class="t" x="24" y="82" width="190" height="18" rx="9"/><rect class="t" x="24" y="108" width="150" height="18" rx="9"/>
+              <rect class="m" x="24" y="144" width="170" height="6" rx="3"/><rect class="m" x="24" y="158" width="130" height="6" rx="3"/>
+              <rect class="ac" x="24" y="182" width="84" height="30" rx="12"/>
+              <rect class="s" x="262" y="62" width="194" height="164" rx="16"/>
+              <circle class="rs" cx="359" cy="124" r="34"/><circle class="ac" cx="359" cy="124" r="16"/>
+              <rect class="ac" x="282" y="190" width="60" height="8" rx="4"/><rect class="pl" x="350" y="190" width="30" height="8" rx="4"/><rect class="ac" x="388" y="190" width="48" height="8" rx="4"/>
+              <path class="ln" d="M24 244.5h432"/><rect class="m" x="24" y="252" width="90" height="5" rx="2.5"/>
+            </svg>
+            <svg class="dg" id="dg-app" viewBox="0 0 480 270" role="img" aria-label="Working interface scheme with a side navigation, a heading, a main action and a list in one panel" hidden>
+              <rect class="app" x=".5" y=".5" width="479" height="269" rx="16"/>
+              <path class="s" d="M16.5.5H113.5V269.5H16.5a16 16 0 01-16-16V16.5a16 16 0 0116-16z"/>
+              <rect class="rs" x="12" y="22" width="90" height="28" rx="9"/><rect class="rd" x="22" y="33" width="48" height="6" rx="3"/>
+              <rect class="m" x="22" y="68" width="56" height="6" rx="3"/><rect class="m" x="22" y="96" width="40" height="6" rx="3"/><rect class="m" x="22" y="124" width="60" height="6" rx="3"/>
+              <rect class="t" x="136" y="30" width="120" height="14" rx="7"/><rect class="ac" x="378" y="23" width="78" height="28" rx="11"/>
+              <rect class="s" x="136" y="72" width="320" height="172" rx="14"/>
+              <path class="ln" d="M136 115h320M136 158h320M136 201h320"/>
+              <rect class="m" x="152" y="90" width="140" height="7" rx="3.5"/><rect class="rs" x="400" y="87" width="40" height="13" rx="6.5"/>
+              <rect class="m" x="152" y="133" width="110" height="7" rx="3.5"/><rect class="rs" x="400" y="130" width="40" height="13" rx="6.5"/>
+              <rect class="m" x="152" y="176" width="150" height="7" rx="3.5"/><rect class="ps" x="400" y="173" width="40" height="13" rx="6.5"/>
+              <rect class="m" x="152" y="219" width="96" height="7" rx="3.5"/><rect class="ps" x="400" y="216" width="40" height="13" rx="6.5"/>
+            </svg>
+          </div>
+        </div>
+        <h3>The working shell in markup</h3>
+        <p>The navigation is 226 px wide. The active section gets a soft rose background and a dark rose label. On a narrow screen the navigation becomes a short row.</p>
+        <pre class="block"><code>&lt;div class="fd-app"&gt;
+  &lt;nav class="fd-nav" aria-label="Sections"&gt;
+    &lt;a href="/today" aria-current="page"&gt;Today&lt;/a&gt;
+    &lt;a href="/library"&gt;Library&lt;/a&gt;
+  &lt;/nav&gt;
+  &lt;main class="fd-main"&gt;
+    &lt;h1&gt;Today&lt;/h1&gt;
+  &lt;/main&gt;
+&lt;/div&gt;</code></pre>
+      </section>
+
+      <section class="sec" id="brand" aria-labelledby="h-brand">
+        <h2 id="h-brand">The rodi. brand</h2>
+        <p class="lead">The author's own sites, profiles and covers carry this brand. A product with its own name keeps its own logo and gets at most a small "by rodi." credit.</p>
+        <div class="brand-grid block">
+          <figure class="fd-panel"><div class="art"><img src="brand/logo-rodi-animated.svg" alt="The rodi. wordmark, dark letters with a pink period" width="241" height="86" loading="lazy"></div><figcaption><b>logo-rodi-animated.svg</b>Wordmark for light pages. It draws in once, like handwriting.</figcaption></figure>
+          <figure class="fd-panel"><div class="art"><img src="brand/logo-rodi-on-rose.svg" alt="The rodi. wordmark in cream on a brand pink plate" width="250" height="90" loading="lazy"></div><figcaption><b>logo-rodi-on-rose.svg</b>Cream letters on brand pink, the period in brand ink.</figcaption></figure>
+          <figure class="fd-panel"><div class="art"><img src="brand/mark-r.svg" alt="The short mark, the letter r with a pink period" width="74" height="80" loading="lazy"></div><figcaption><b>mark-r.svg</b>The short mark for icons. It fits a favicon.</figcaption></figure>
+          <figure class="fd-panel"><div class="art"><img class="round" src="brand/avatar-mark.png" alt="Round brand pink avatar with a cream r and a dark period" width="112" height="112" loading="lazy"></div><figcaption><b>avatar-mark.png</b>Avatar, 1024 px, brand pink with a cream mark.</figcaption></figure>
+          <figure class="fd-panel wide"><div class="art"><picture><source srcset="brand/rodi.png" media="(prefers-reduced-motion: reduce)"><img src="brand/rodi.gif" alt="Profile banner with the rodi. wordmark writing itself on brand pink" width="340" height="120" loading="lazy" style="border-radius:12px"></picture></div><figcaption><b>banner.gif</b>Profile banner, 680 by 240, with the wordmark in the center. It writes itself in a loop, and a still image replaces it under reduced motion.</figcaption></figure>
+        </div>
+        <h3>Rules of the wordmark</h3>
+        <div class="fd-panel block">
+          <ul class="plain-list rows">
+            <li><svg class="ic" aria-hidden="true"><use href="#i-dot"/></svg><span>The period is the signature. It always takes the accent color and never matches the letters.</span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#i-dot"/></svg><span>The letters are one stroke width with round caps, drawn from SVG paths. No font is needed.</span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#i-dot"/></svg><span>Clear space around the wordmark is at least the height of the letter o.</span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#i-dot"/></svg><span>It is never stretched, outlined, shadowed or placed on a busy photo.</span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#i-dot"/></svg><span>Brand pink <code>#d78494</code> is the identity color. Buttons and selection in an interface still use the UI accent <code>#e47f93</code>.</span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#i-dot"/></svg><span>A new size or variant comes from <code>generate.py</code> in the brand folder. The logo is not redrawn by hand.</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="sec" id="rules" aria-labelledby="h-rules">
+        <h2 id="h-rules">Rules and limits</h2>
+        <p class="lead">The skill is mostly a set of decisions an agent makes before it draws anything. These are the ones it follows, and the cases where it steps back.</p>
+
+        <h3>Interaction priorities</h3>
+        <div class="fd-panel rows block">
+          <div class="prio"><strong>Interaction beats plain input.</strong><p>First look for a way to choose, toggle, drag or compare with immediate feedback. Text fields stay for text, search and exact data.</p></div>
+          <div class="prio"><strong>Pictures beat long text.</strong><p>Show the result with a real screenshot, a preview or a diagram and add a short caption. Action names, errors and values stay as text.</p></div>
+          <div class="prio"><strong>Nothing on screen jumps.</strong><p>Within one screen size, a tab switch, an opened panel or loaded data never moves what is already there.</p></div>
+          <div class="prio"><strong>Every wrong move gets an answer.</strong><p>Feedback stays in place, without pop-up windows, and it repeats on every attempt.</p></div>
+          <div class="prio"><strong>Simplicity beats feature count.</strong><p>One main task per screen and one main next step. Rare settings open on demand.</p></div>
+        </div>
+
+        <h3>Definition of done</h3>
+        <div class="fd-panel block">
+          <ul class="plain-list rows">
+            <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span>It is clear what can be done here without reading long instructions.</span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span>A meaningful visual example stands where it explains better than a paragraph, and controls show the result right away.</span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span>Every state is readable without its color. A label, an icon or a sentence stands next to the bar, hatch or dashed frame.</span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span>The palette stays soft and text stays readable. No small white letters on light pink.</span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span>Controls work from the keyboard, focus is visible and targets are comfortable to tap.</span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span>Images have meaningful alt text, and animation respects prefers-reduced-motion.</span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span>On mobile there is no horizontal overflow and no hidden main action.</span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span>Every refused action and invalid input answers in place, each time it happens.</span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span>Switching tabs, opening a panel, loading data and showing a notice move nothing that was already on screen.</span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span>No dead buttons, no decorative charts with made-up numbers, no endless animation and no unrequested features.</span></li>
+          </ul>
+        </div>
+
+        <h3>When the skill steps back</h3>
+        <div class="fd-panel block">
+          <ul class="plain-list plain-list--plum rows">
+            <li><svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg><span>The project already has its own design system. The skill is not applied and the agent follows that system.</span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg><span>Backend and infrastructure work is out of scope.</span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg><span>A new explicit request from the user takes priority over the style.</span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg><span>A targeted edit keeps the neighbouring patterns. There is no full redesign unless it was asked for.</span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg><span>Without a browser the agent reports that limit and does not claim visual testing.</span></li>
+            <li><svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg><span>The skill needs no network, and no specific MCP server or image generator.</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="sec" id="install" aria-labelledby="h-install">
+        <h2 id="h-install">Install and use</h2>
+        <p class="lead">A skill for Claude Code and Codex. The agent applies the style when you ask for a site, landing page, web app or component in it.</p>
+        <h3>Claude Code</h3>
+        <div class="code block"><pre><code id="code-claude">git clone https://github.com/byrodi/frontend-design ~/IdeaProjects/skills/frontend-design
+ln -s ~/IdeaProjects/skills/frontend-design ~/.claude/skills/frontend-design</code></pre><button class="copy" type="button" data-copy="code-claude">Copy</button></div>
+        <h3>Codex</h3>
+        <div class="code block"><pre><code id="code-codex">ln -s ~/IdeaProjects/skills/frontend-design/skills/frontend-design ~/.agents/skills/frontend-design</code></pre><button class="copy" type="button" data-copy="code-codex">Copy</button></div>
+        <h3>Ask for it</h3>
+        <p>The skill loads on requests like these. To call it by name in Claude Code, run <code>/frontend-design:frontend-design</code>.</p>
+        <pre class="block"><code>lay out a landing page in this style
+build a settings screen for the web app in this style</code></pre>
+        <h3>How the agent works</h3>
+        <ol class="steps block">
+          <li>It looks at the project's stack, components and content.</li>
+          <li>It takes the palette and scales from the design reference.</li>
+          <li>It maps the tokens onto the styling system the project already uses.</li>
+          <li>It builds the main scenario and checks narrow and wide screens.</li>
+        </ol>
+      </section>
+
+      <footer>Released under the MIT License. <a href="https://github.com/byrodi/frontend-design">github.com/byrodi/frontend-design</a>, by rodi.</footer>
+      <p class="sr" id="sr" role="status"></p>
+    </main>
+  </div>
+
+  <script>
+    const $ = (s, r = document) => r.querySelector(s);
+    const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+    const token = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+
+    // Feedback that repeats: the message is created again on every attempt,
+    // so the flash restarts and the live region announces the text again.
+    function say(line, text, kind = 'system') {
+      const p = document.createElement('p');
+      p.className = 'fd-notice flash fd-notice--' + kind;
+      p.setAttribute('role', kind === 'error' ? 'alert' : 'status');
+      p.textContent = text;
+      line.replaceChildren(p);
+    }
+    function fieldSay(line, text, isError) {
+      const p = document.createElement('p');
+      if (isError) { p.className = 'flash'; p.setAttribute('role', 'alert'); }
+      p.textContent = text;
+      line.replaceChildren(p);
+    }
+    function announce(text) {
+      const span = document.createElement('span');
+      span.textContent = text;
+      $('#sr').replaceChildren(span);
+    }
+
+    // Copy with an answer in the control itself. The label keeps its box.
+    async function copyText(text, label, selectNode) {
+      let ok = true;
+      try { await navigator.clipboard.writeText(text); } catch { ok = false; }
+      if (!ok && selectNode) getSelection().selectAllChildren(selectNode);
+      label.dataset.idle ||= label.textContent;
+      label.textContent = ok ? 'Copied' : (selectNode ? 'Selected' : 'Blocked');
+      // Restart the flash on every press, even when the label is unchanged.
+      label.classList.remove('flash'); void label.offsetWidth; label.classList.add('flash');
+      announce(ok ? 'Copied ' + text : 'Copying is blocked in this browser. The text is ' + text);
+      clearTimeout(label._t);
+      label._t = setTimeout(() => { label.textContent = label.dataset.idle; }, 1600);
+    }
+
+    // Colors: show the live token values and copy on press.
+    for (const row of $$('.sw')) {
+      const name = row.dataset.token;
+      $('code', row).textContent = token(name);
+      row.addEventListener('click', () => copyText('var(' + name + ')', $('.sw-act', row)));
+    }
+    for (const button of $$('.copy')) {
+      button.addEventListener('click', () => {
+        const code = document.getElementById(button.dataset.copy);
+        copyText(code.textContent, button, code);
+      });
+    }
+
+    // Contrast, computed from the tokens with the WCAG formula.
+    const lum = (hex) => {
+      const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255)
+        .map((c) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4));
+      return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    };
+    const ratio = (a, b) => {
+      const [hi, lo] = [lum(a), lum(b)].sort((x, y) => y - x);
+      return (hi + 0.05) / (lo + 0.05);
+    };
+    const pairs = [
+      ['text', 'bg', 'Body text on the site background', 4.5],
+      ['muted', 'surface', 'Captions and hints on a panel', 4.5],
+      ['muted', 'bg-app', 'Captions on the app canvas and on a hatch', 4.5],
+      ['on-accent', 'accent', 'Label of the pink button', 4.5],
+      ['rose', 'surface', 'Links and active text', 4.5],
+      ['rose-strong', 'rose-soft', 'Selected navigation', 4.5],
+      ['plum-text', 'plum-soft', 'Text on soft plum', 4.5],
+      ['error', 'rose-soft', 'Error notice', 4.5],
+      ['success', 'surface', 'Short text of a confirmed result', 4.5],
+      ['warning', 'surface', 'Amber line or icon', 3],
+      ['control-line', 'surface', 'Border of a control', 3],
+      ['accent', 'surface', 'Accent pink as a fill', 0],
+      ['plum', 'surface', 'Plum in a diagram', 0],
+    ];
+    const icon = (id) => '<svg class="ic" aria-hidden="true"><use href="#i-' + id + '"/></svg>';
+    $('#contrast').innerHTML = pairs.map(([fg, bg, use, need]) => {
+      const value = ratio(token('--fd-' + fg), token('--fd-' + bg));
+      const mark = need === 4.5 ? 'Aa' : need === 3 ? '<i></i>' : '<b></b>';
+      const verdict = need === 0 ? ['fill', 'dot', 'Fill only, no text']
+        : value >= need ? ['ok', 'check', 'Passes'] : ['bad', 'x', 'Fails'];
+      return '<tr><td><span class="aa" style="color:var(--fd-' + fg + ');background:var(--fd-' + bg + ')">' + mark + '</span></td>'
+        + '<td><code>' + fg + '</code> on <code>' + bg + '</code></td><td>' + use + '</td>'
+        + '<td class="num">' + value.toFixed(2) + ' to 1</td><td class="num">' + (need ? need + ' to 1' : 'Not text') + '</td>'
+        + '<td><span class="verdict verdict--' + verdict[0] + '">' + icon(verdict[1]) + verdict[2] + '</span></td></tr>';
+    }).join('');
+
+    // Motion sample.
+    $('#track-btn').addEventListener('click', (event) => {
+      const on = $('#track').classList.toggle('is-end');
+      event.currentTarget.setAttribute('aria-pressed', on);
+    });
+
+    // A refused action that answers every press.
+    const seats = { used: 2, max: 3, refused: 0 };
+    function renderSeats() {
+      $('#seat-out').textContent = seats.used + ' of ' + seats.max + ' seats used';
+      $('#seat-count').textContent = seats.refused + (seats.refused === 1 ? ' refusal' : ' refusals') + ' answered so far.';
+    }
+    function refuse(text) { seats.refused += 1; say($('#seat-line'), text, 'error'); renderSeats(); }
+    $('#seat-add').addEventListener('click', () => {
+      if (seats.used === seats.max) return refuse('All 3 seats are taken. Remove a seat first.');
+      seats.used += 1; $('#seat-line').replaceChildren(); renderSeats();
+    });
+    $('#seat-remove').addEventListener('click', () => {
+      if (seats.used === 0) return refuse('No seats are in use, so there is nothing to remove.');
+      seats.used -= 1; $('#seat-line').replaceChildren(); renderSeats();
+    });
+
+    // An invalid field: the message flashes again and focus returns on each submit.
+    const pname = $('#pname');
+    $('#name-form').addEventListener('submit', (event) => {
+      event.preventDefault();
+      const value = pname.value.trim();
+      if (value.length < 3) {
+        pname.setAttribute('aria-invalid', 'true');
+        fieldSay($('#pname-line'), 'Enter at least 3 characters. This name has ' + value.length + '.', true);
+        $('#form-line').replaceChildren();
+        pname.focus();
+        return;
+      }
+      pname.removeAttribute('aria-invalid');
+      fieldSay($('#pname-line'), 'At least 3 characters.', false);
+      say($('#form-line'), 'Saved "' + value + '" in this demo. Nothing leaves the page.', 'success');
+    });
+
+    // Slider with an exact field and a live preview.
+    const rad = $('#rad'), radN = $('#rad-n'), radBox = $('#rad-preview');
+    function setRadius(value) {
+      rad.value = radN.value = value;
+      radBox.style.borderRadius = value + 'px';
+      radBox.textContent = value + ' px';
+    }
+    rad.addEventListener('input', () => { setRadius(rad.value); fieldSay($('#rad-line'), 'The radius goes from 0 to 32 px.', false); });
+    radN.addEventListener('input', () => {
+      const value = Number(radN.value);
+      if (radN.value === '' || !Number.isInteger(value) || value < 0 || value > 32) {
+        radN.setAttribute('aria-invalid', 'true');
+        fieldSay($('#rad-line'), 'Use a whole number from 0 to 32. The preview keeps ' + rad.value + ' px.', true);
+        return;
+      }
+      radN.removeAttribute('aria-invalid');
+      fieldSay($('#rad-line'), 'The radius goes from 0 to 32 px.', false);
+      setRadius(value);
+    });
+
+    // Caution and danger zones with real effects on this page.
+    $('#reset-demos').addEventListener('click', () => {
+      Object.assign(seats, { used: 2, refused: 0 });
+      renderSeats();
+      $('#seat-line').replaceChildren(); $('#form-line').replaceChildren();
+      pname.value = ''; pname.removeAttribute('aria-invalid'); radN.removeAttribute('aria-invalid');
+      fieldSay($('#pname-line'), 'At least 3 characters.', false);
+      fieldSay($('#rad-line'), 'The radius goes from 0 to 32 px.', false);
+      setRadius(17);
+      $('#track').classList.remove('is-end'); $('#track-btn').setAttribute('aria-pressed', 'false');
+      say($('#reset-line'), 'The demos are back at the start.', 'success');
+    });
+    $('#delete-note').addEventListener('click', (event) => {
+      // The ghost keeps the old place of the note, so nothing below it moves.
+      const ghost = document.createElement('p');
+      ghost.className = 'fd-ghost';
+      ghost.textContent = 'The note was deleted. A ghost keeps its place.';
+      $('#note-slot').replaceChildren(ghost);
+      event.currentTarget.disabled = true;
+      say($('#delete-line'), 'Deleted. Reload the page to bring the note back.', 'error');
+    });
+
+    // Tabs with arrow keys. All panels share one grid cell, so the height never changes.
+    const tabs = $$('[role="tab"]');
+    function pick(tab) {
+      for (const t of tabs) {
+        const on = t === tab;
+        t.setAttribute('aria-selected', on);
+        t.tabIndex = on ? 0 : -1;
+        document.getElementById(t.getAttribute('aria-controls')).classList.toggle('is-on', on);
+      }
+    }
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => pick(tab));
+      tab.addEventListener('keydown', (event) => {
+        const step = { ArrowRight: 1, ArrowLeft: -1 }[event.key];
+        if (!step) return;
+        const next = tabs[(i + step + tabs.length) % tabs.length];
+        next.focus(); pick(next);
+      });
+    });
+
+    // A real layout-shift observer for the navigation and the tab bar.
+    const shiftOut = $('#shift-count');
+    if (window.PerformanceObserver && PerformanceObserver.supportedEntryTypes.includes('layout-shift')) {
+      let shifts = 0;
+      const show = () => { shiftOut.textContent = shifts + (shifts === 1 ? ' layout shift' : ' layout shifts') + ' recorded in the navigation and the tab bar since this page loaded.'; };
+      new PerformanceObserver((list) => {
+        for (const entry of list.getEntries()) {
+          if (entry.sources.some((s) => s.node && s.node.closest && s.node.closest('.fd-nav, .seg'))) shifts += 1;
+        }
+        show();
+      }).observe({ type: 'layout-shift', buffered: true });
+      show();
+    } else {
+      shiftOut.textContent = 'This browser does not report layout shifts. Chrome and Edge do.';
+    }
+
+    // Layout chooser.
+    const layoutText = {
+      landing: 'Short navigation, a concise heading with the main action, visual proof or a live example, and a simple footer.',
+      app: 'A narrow white navigation, a light canvas, a heading with one main action, then a list in one panel with dividers.',
+    };
+    $('#layout-form').addEventListener('change', (event) => {
+      const value = event.target.value;
+      $('#dg-landing').hidden = value !== 'landing';
+      $('#dg-app').hidden = value !== 'app';
+      $('#layout-cap').textContent = layoutText[value];
+    });
+
+    // Mark the section in view in the navigation.
+    const links = new Map($$('.fd-nav a').map((a) => [a.hash.slice(1), a]));
+    const nav = $('.fd-nav');
+    const spy = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        for (const a of links.values()) a.removeAttribute('aria-current');
+        const link = links.get(entry.target.id);
+        link.setAttribute('aria-current', 'location');
+        if (nav.scrollWidth > nav.clientWidth) nav.scrollTo({ left: link.offsetLeft - 16 });
+      }
+    }, { rootMargin: '-15% 0px -75% 0px' });
+    for (const id of links.keys()) spy.observe(document.getElementById(id));
+  </script>
+</body>
+</html>
